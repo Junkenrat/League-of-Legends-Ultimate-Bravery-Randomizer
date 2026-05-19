@@ -1,0 +1,168 @@
+/* ===========================================================================
+   main_page4.css — звёздочки уникальных пассивок над предметами, общий
+   тултип с названием картинки, стили истории, прочие мелкие тексты.
+   =========================================================================== */
+
+/* === Звезда уникальной пассивки + её розовый тултип (рисуется над предметом) */
+.tooltip_wrapper {
+    position: relative;
+    display: inline-block;
+    top: -35px;
+}
+
+/* Сам тултип со стрелкой вниз — розовый по умолчанию */
+.tooltip_text_with_arrow {
+    position: absolute;
+    bottom: 100%; 
+    left: 50%;
+    transform: translateX(-50%) ;
+    background-color: #FF9E9E;
+    color: #000;
+    padding: 6px 10px;
+    border-radius: 10px;
+    white-space: nowrap;
+    font-size: 14px;
+    z-index: 10;
+    opacity: 0;
+    height: 30px;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    font-family: "Zain", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 21px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: -47px;
+    margin-left: -3px;
+    padding-top: 9px;
+}
+
+/* Стрелочка */
+.tooltip_text_with_arrow::after {
+    content: '';
+    position: absolute;
+    top: 100%; /* снизу тултипа */
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: #FF9E9E transparent transparent transparent;
+}
+
+/* Показывать при наведении */
+.tooltip_wrapper:hover .tooltip_text_with_arrow {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Жёлтый вариант — для "Runaan's Hurricane: Ranged only" */
+.tooltip_text_with_arrow.yellow {
+    background-color: yellow;
+}
+.tooltip_text_with_arrow.yellow::after {
+    border-color: yellow transparent transparent transparent;
+}
+
+
+/* Маленькая звезда в углу слота предмета (индикатор уникальной пассивки) */
+.star_icon {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 25px; 
+    height: 25px;
+    z-index: 2;
+    border-radius: 15px;
+    border: solid 3px #FF9E9E;
+    background-color: #FF9E9E;
+    transform: scale(0.95);
+}
+
+/* Финальная подпись под историей (про русского студента и Smurf_tv) */
+.final_text {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Zain", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 28px;
+    width: 100%;
+    text-align: center; 
+}
+
+/* Плейсхолдер "No history yet" — показывается, пока myData пуст */
+.no_history {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-family: "Zain", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    font-size: 35px;
+    top: 9px;
+    width: 100%;
+    text-align: center; 
+    color: rgb(147, 147, 147)
+}
+
+/* Левая часть строки истории: "N. ChampionName (HH:MM - DD.MM.YYYY)" */
+.name_date {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.example_time {
+    font-family: "Zain", sans-serif;
+    font-weight: 200;
+    font-style: normal;
+    font-size: 20px;
+    text-align: center; 
+    margin-bottom: -1px;
+}
+
+/* === Общий тултип-облачко с названием картинки (см. JS formatImageName) ====
+   Одиночный fixed-div, переиспользуется для всех item_label_box, summoner1/2,
+   role, banned_champion. Появляется сверху от объекта по hover. */
+#item-hover-tooltip {
+    position: fixed;
+    background-color: #ffffff;
+    color: #000;
+    padding: 2px 10px 4px;
+    border-radius: 12px;
+    white-space: nowrap;
+    font-family: "Zain", sans-serif;
+    font-weight: 400;
+    font-size: 21px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 1000;
+    transform: translateX(-50%);
+}
+
+#item-hover-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: #ffffff transparent transparent transparent;
+}
+
+#item-hover-tooltip.visible {
+    opacity: 1;
+}
+
+/* Узкий пустой div-разделитель (8px) между текстовыми элементами в name_date */
+.divider777 {
+    width: 8px;
+}

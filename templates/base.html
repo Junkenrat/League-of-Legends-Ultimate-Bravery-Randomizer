@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, height=device-height, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main_page1.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main_page2.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main_page3.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main_page4.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fonts.css')}}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zain:ital,wght@0,200;0,300;0,400;0,700;0,800;0,900;1,300;1,400&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dongle:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400..800&display=swap">
+    <script src="{{url_for('static', filename='main.js')}}" defer></script>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/others/logo.png')}}">
+    <title>Randomizer for Smurf_tv</title>
+</head>
+
+<body style="background-color: #111111; zoom: 0.65;">
+
+    <div id="data-container"
+        data-summoners='{{ summoners_json | tojson | safe }}'
+        data-smite='{{ smite_json | tojson | safe }}'
+        data-champion-arts='{{ champion_arts_json | tojson | safe }}'
+        data-champion-icons='{{ champion_icons_json | tojson | safe }}'
+        data-common-start-items='{{ common_start_items_json | tojson | safe }}'
+        data-jungle-start-items='{{ jungle_start_items_json | tojson | safe }}'
+        data-support-start-items='{{ support_start_items_json | tojson | safe }}'
+        data-legendary-items='{{ legendary_items_json | tojson | safe }}'
+        data-boots='{{ boots_json | tojson | safe }}'
+        data-roles='{{ roles_json | tojson | safe }}'
+        data-abilities='{{ abilities_json | tojson | safe }}'
+        data-runes-branches='{{ runes_branches_json | tojson | safe }}'>
+    </div>
+    
+    <div class="wrapper" style="padding-top: 50px;">
+    
+        <div class="upper_container" style="min-width: 1070px;">
+            <h1>Randomizer for Smurf_tv<h1>
+            <div class="upper_buttons">
+                <button id="no_repeats_btn" class="toggle_btn">No repeats
+                    <span class="toggle_tooltip">No champion repeats within 10 rolls</span>
+                </button>
+                <button id="boots_start_btn" class="toggle_btn">Boots start
+                    <span class="toggle_tooltip">Boots allowed as first item</span>
+                </button>
+                <div class="upper_divider"></div>
+                <button class="twitch_button" onclick="window.open('https://twitch.tv/smurf_tv', '_blank')"></button>
+            </div>
+        </div>
+
+        <hr style="border: none; height: 2px; background-color: #939393; margin-bottom: 80px;">
+        
+        <div id="champion_card" class="character_banner">
+            <div class="role_manage">
+                <button id="toggle_top" class="role-toggle">
+                    <img src="{{url_for('static', filename='images/roles/top.png')}}"/>
+                </button><hr>
+                <button id="toggle_jungle" class="role-toggle">
+                    <img src="{{url_for('static', filename='images/roles/jungle.png')}}"/>
+                </button><hr>
+                <button id="toggle_mid" class="role-toggle">
+                    <img src="{{url_for('static', filename='images/roles/mid.png')}}"/>
+                </button><hr>
+                <button id="toggle_bot" class="role-toggle">
+                    <img src="{{url_for('static', filename='images/roles/bot.png')}}"/>
+                </button><hr>
+                <button id="toggle_support" class="role-toggle">
+                    <img src="{{url_for('static', filename='images/roles/support.png')}}"/>
+                </button>
+            </div>
+            <h2 id="champion_name" class="character_name">AHRI</h2>
+            <button id="reroll_btn" class="reroll_btn">REROLL</button>
+        </div>
+        <hr style="border: none; height: 0; margin: 20px 0; margin-bottom: 60px;">
+
+        <div class="first_group">
+            <div class="items_banner">
+                <hr style="border: none; height: 0; margin: 20px 0; margin-bottom: -13px">
+                <h1 style="margin-left: 26px">Items</h1>
+                <div class="items_upper_divider_box">
+                    <hr class="items_upper_divider">
+                </div>
+                <div class="items_box">
+                    <div class="items_row">
+                        <div class="item_label_box"> <!--START-->
+                            <img class="c123" id="start_item" src="{{url_for('static', filename='images/items/start/common/dark seal.webp')}}" alt="start">
+                            <div id="star0" class="tooltip_wrapper">
+                                <img class="star_icon" src="{{url_for('static', filename='images/others/star.png')}}" alt="star">
+                                <div id="text0" class="tooltip_text_with_arrow">Unique: Spellblade</div>
+                            </div>
+                            <div class="caption_box">Start</div>
+                        </div> 
+                        <div class="items_divider"></div>
+                        <div class="item_label_box"> <!--BOOTS-->
+                            <img class="c123" id="boot" src="{{url_for('static', filename='images/items/boots/berserkers.png')}}" alt="Boots">
+                            <div class="caption_box">Boots</div>
+                        </div>
+                        <div class="item_label_box"> <!--FIRST-->
+                            <img class="c123" id="1st" src="{{url_for('static', filename='images/items/start/common/dark seal.webp')}}" alt="start">
+                            <div id="star1" class="tooltip_wrapper">
+                                <img id="ss1" class="star_icon" src="{{url_for('static', filename='images/others/star.png')}}" alt="star">
+                                <div id="text1" class="tooltip_text_with_arrow"></div>
+                            </div>
+                            <div class="caption_box">1st</div>
+                        </div>          
+                        <div class="item_label_box"> <!--SECOND-->
+                            <img class="c123" id="2nd" src="{{url_for('static', filename='images/items/start/common/dark seal.webp')}}" alt="start">
+                            <div id="star2" class="tooltip_wrapper">
+                                <img id="ss2" class="star_icon" src="{{url_for('static', filename='images/others/star.png')}}" alt="star">
+                                <div id="text2" class="tooltip_text_with_arrow"></div>
+                            </div>
+                            <div class="caption_box">2nd</div>
+                        </div>
+                        <div class="item_label_box"> <!--THIRD-->
+                            <img class="c123" id="3rd" src="{{url_for('static', filename='images/items/start/common/dark seal.webp')}}" alt="start">
+                            <div id="star3" class="tooltip_wrapper">
+                                <img id="ss3" class="star_icon" src="{{url_for('static', filename='images/others/star.png')}}" alt="star">
+                                <div id="text3" class="tooltip_text_with_arrow"></div>
+                            </div>
+                            <div class="caption_box">3rd</div>
+                        </div>
+                        <div class="item_label_box"> <!--FOURTH-->
+                            <img class="c123" id="4th" src="{{url_for('static', filename='images/items/start/common/dark seal.webp')}}" alt="start">
+                            <div id="star4" class="tooltip_wrapper">
+                                <img id="ss4" class="star_icon" src="{{url_for('static', filename='images/others/star.png')}}" alt="star">
+                                <div id="text4" class="tooltip_text_with_arrow"></div>
+                            </div>
+                            <div class="caption_box">4th</div>
+                        </div>
+                        <div class="item_label_box"> <!--FIFTH-->
+                            <img class="c123" id="5th" src="{{url_for('static', filename='images/items/start/common/dark seal.webp')}}" alt="start">
+                            <div id="star5" class="tooltip_wrapper">
+                                <img id="ss5" class="star_icon" src="{{url_for('static', filename='images/others/star.png')}}" alt="star">
+                                <div id="text5" class="tooltip_text_with_arrow"></div>
+                            </div>
+                            <div id="label5" class="caption_box">5th</div>
+                        </div>
+                        <div id="item_box_6" class="item_label_box" style="display: none;"> <!--SIXTH-->
+                            <img class="c123" id="6th" src="{{url_for('static', filename='images/items/start/common/dark seal.webp')}}" alt="start">
+                            <div id="star6" class="tooltip_wrapper" style="display: none;">
+                                <img id="ss6" class="star_icon" src="{{url_for('static', filename='images/others/star.png')}}" alt="star">
+                                <div id="text6" class="tooltip_text_with_arrow"></div>
+                            </div>
+                            <div id="label6" class="caption_box">6th</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="first_group_divider"></div>
+            <div class="summoners_banner">
+                <hr style="border: none; height: 0; margin: 20px 0; margin-bottom: -13px">
+                <h1 style="margin-left: 26px">Summoners</h1>
+                <div class="summoners_upper_divider_box">
+                    <hr class="summoners_upper_divider">
+                </div>
+                <div class="summoners_box">
+                    <div class="summoners_row">
+                        <img id="summoner1" src="{{url_for('static', filename='images/summoners/flash.png')}}" alt="summoner1">
+                        <img id="summoner2" src="{{url_for('static', filename='images/summoners/cleanse.png')}}" alt="summoner2">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr style="border: none; height: 0; margin: 15px 0">
+
+        <div class="second_group">
+            <div class="runes_banner">
+                <hr style="border: none; height: 0; margin: 10px 0; margin-bottom: -13px">
+                <h1 style="margin-left: 26px">Runes</h1>
+                <div class="runes_upper_divider_box">
+                    <hr class="runes_upper_divider">
+                </div>
+                <div class="runes">
+                    <div class="main_runes">
+                        <div class="main_branches">
+                            <img id="precision" src="{{url_for('static', filename='images/runes/branches/precision.webp')}}" alt="d">
+                            <img id="domination" src="{{url_for('static', filename='images/runes/branches/domination.webp')}}" alt="i">
+                            <img id="sorcery" src="{{url_for('static', filename='images/runes/branches/sorcery.webp')}}" alt="p">
+                            <img id="resolve" src="{{url_for('static', filename='images/runes/branches/resolve.webp')}}" alt="r">
+                            <img id="inspiration" src="{{url_for('static', filename='images/runes/branches/inspiration.webp')}}" alt="s">
+                        </div>
+                        <div class="core_main_runes">
+                            <img id="core_rune1" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d"
+                                data-precision="{{url_for('static', filename='images/runes/core/precision/press_the_attack.webp')}}"
+                                data-domination="{{url_for('static', filename='images/runes/core/domination/electrocute.webp')}}"
+                                data-sorcery="{{url_for('static', filename='images/runes/core/sorcery/summon_aery.webp')}}"
+                                data-resolve="{{url_for('static', filename='images/runes/core/resolve/grasp_of_the_undying.webp')}}"
+                                data-inspiration="{{url_for('static', filename='images/runes/core/inspiration/glacial_augment.webp')}}">
+                            <img id="core_rune2" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d"
+                                data-precision="{{url_for('static', filename='images/runes/core/precision/fleet_footwork.webp')}}"
+                                data-domination="{{url_for('static', filename='images/runes/core/domination/dark_harvest.webp')}}"
+                                data-sorcery="{{url_for('static', filename='images/runes/core/sorcery/arcane_comet.webp')}}"
+                                data-resolve="{{url_for('static', filename='images/runes/core/resolve/aftershock.webp')}}"
+                                data-inspiration="{{url_for('static', filename='images/runes/core/inspiration/unsealed_spellbook.webp')}}">
+                            <img id="core_rune3" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d"
+                                data-precision="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}"
+                                data-domination="{{url_for('static', filename='images/runes/core/domination/hail_of_blades.webp')}}"
+                                data-sorcery="{{url_for('static', filename='images/runes/core/sorcery/stormraiders_surge.webp')}}"
+                                data-resolve="{{url_for('static', filename='images/runes/core/resolve/guardian.webp')}}"
+                                data-inspiration="{{url_for('static', filename='images/runes/core/inspiration/first_strike.webp')}}">
+                            <img id="core_rune4" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d"
+                                data-precision="{{url_for('static', filename='images/runes/core/precision/lethal_tempo.webp')}}"
+                                data-sorcery="{{url_for('static', filename='images/runes/core/sorcery/deathfire_touch.webp')}}">
+                        </div>
+                        <div class="additional_main_runes">
+                            <img id="core_rune5" src="{{url_for('static', filename='images/runes/additional/precision/coup_de_grace.webp')}}" alt="r"
+                                data-precision="{{url_for('static', filename='images/runes/additional/precision/absorb_life.webp')}}"
+                                data-domination="{{url_for('static', filename='images/runes/additional/domination/cheap_shot.webp')}}"
+                                data-sorcery="{{url_for('static', filename='images/runes/additional/sorcery/axiom_arcanist.webp')}}"
+                                data-resolve="{{url_for('static', filename='images/runes/additional/resolve/demolish.webp')}}"
+                                data-inspiration="{{url_for('static', filename='images/runes/additional/inspiration/hextech_flashtraption.webp')}}">
+                            <img id="core_rune6" src="{{url_for('static', filename='images/runes/additional/precision/coup_de_grace.webp')}}" alt="r"
+                                data-precision="{{url_for('static', filename='images/runes/additional/precision/triumph.webp')}}"
+                                data-domination="{{url_for('static', filename='images/runes/additional/domination/taste_of_blood.webp')}}"
+                                data-sorcery="{{url_for('static', filename='images/runes/additional/sorcery/manaflow_band.webp')}}"
+                                data-resolve="{{url_for('static', filename='images/runes/additional/resolve/font_of_life.webp')}}"
+                                data-inspiration="{{url_for('static', filename='images/runes/additional/inspiration/magical_footwear.webp')}}">
+                            <img id="core_rune7" src="{{url_for('static', filename='images/runes/additional/precision/coup_de_grace.webp')}}" alt="r"
+                                data-precision="{{url_for('static', filename='images/runes/additional/precision/presence_of_mind.webp')}}"
+                                data-domination="{{url_for('static', filename='images/runes/additional/domination/sudden_impact.webp')}}"
+                                data-sorcery="{{url_for('static', filename='images/runes/additional/sorcery/nimbus_cloak.webp')}}"
+                                data-resolve="{{url_for('static', filename='images/runes/additional/resolve/shield_bash.webp')}}"
+                                data-inspiration="{{url_for('static', filename='images/runes/additional/inspiration/cash_back.webp')}}">
+                        </div>
+                        <div class="additional_main_runes">
+                            <img id="core_rune8" src="{{url_for('static', filename='images/runes/additional/precision/coup_de_grace.webp')}}" alt="r"
+                                data-precision="{{url_for('static', filename='images/runes/additional/precision/legend-alacrity.webp')}}"
+                                data-domination="{{url_for('static', filename='images/runes/additional/domination/sixth_sense.webp')}}"
+                                data-sorcery="{{url_for('static', filename='images/runes/additional/sorcery/transcendence.webp')}}"
+                                data-resolve="{{url_for('static', filename='images/runes/additional/resolve/conditioning.webp')}}"
+                                data-inspiration="{{url_for('static', filename='images/runes/additional/inspiration/triple_tonic.webp')}}">
+                            <img id="core_rune9" src="{{url_for('static', filename='images/runes/additional/precision/coup_de_grace.webp')}}" alt="r"
+                                data-precision="{{url_for('static', filename='images/runes/additional/precision/legend-haste.webp')}}"
+                                data-domination="{{url_for('static', filename='images/runes/additional/domination/grisly_mementos.webp')}}"
+                                data-sorcery="{{url_for('static', filename='images/runes/additional/sorcery/celerity.webp')}}"
+                                data-resolve="{{url_for('static', filename='images/runes/additional/resolve/second_wind.webp')}}"
+                                data-inspiration="{{url_for('static', filename='images/runes/additional/inspiration/time_warp_tonic.webp')}}">
+                            <img id="core_rune10" src="{{url_for('static', filename='images/runes/additional/precision/coup_de_grace.webp')}}" alt="r"
+                                data-precision="{{url_for('static', filename='images/runes/additional/precision/legend-bloodline.webp')}}"
+                                data-domination="{{url_for('static', filename='images/runes/additional/domination/deep_ward.webp')}}"
+                                data-sorcery="{{url_for('static', filename='images/runes/additional/sorcery/absolute_focus.webp')}}"
+                                data-resolve="{{url_for('static', filename='images/runes/additional/resolve/bone_plating.webp')}}"
+                                data-inspiration="{{url_for('static', filename='images/runes/additional/inspiration/biscuit_delivery.webp')}}">
+                        </div>
+                        <div class="additional_main_runes">
+                            <img id="core_rune11" src="{{url_for('static', filename='images/runes/additional/precision/coup_de_grace.webp')}}" alt="r"
+                                data-precision="{{url_for('static', filename='images/runes/additional/precision/coup_de_grace.webp')}}"
+                                data-domination="{{url_for('static', filename='images/runes/additional/domination/treasure_hunter.webp')}}"
+                                data-sorcery="{{url_for('static', filename='images/runes/additional/sorcery/scorch.webp')}}"
+                                data-resolve="{{url_for('static', filename='images/runes/additional/resolve/overgrowth.webp')}}"
+                                data-inspiration="{{url_for('static', filename='images/runes/additional/inspiration/cosmic_insight.webp')}}">
+                            <img id="core_rune12" src="{{url_for('static', filename='images/runes/additional/precision/coup_de_grace.webp')}}" alt="r"
+                                data-precision="{{url_for('static', filename='images/runes/additional/precision/cut_down.webp')}}"
+                                data-domination="{{url_for('static', filename='images/runes/additional/domination/relentless_hunter.webp')}}"
+                                data-sorcery="{{url_for('static', filename='images/runes/additional/sorcery/waterwalking.webp')}}"
+                                data-resolve="{{url_for('static', filename='images/runes/additional/resolve/revitalize.webp')}}"
+                                data-inspiration="{{url_for('static', filename='images/runes/additional/inspiration/approach_velocity.webp')}}">
+                            <img id="core_rune13" src="{{url_for('static', filename='images/runes/additional/precision/coup_de_grace.webp')}}" alt="r"
+                                data-precision="{{url_for('static', filename='images/runes/additional/precision/last_stand.webp')}}"
+                                data-domination="{{url_for('static', filename='images/runes/additional/domination/ultimate_hunter.webp')}}"
+                                data-sorcery="{{url_for('static', filename='images/runes/additional/sorcery/gathering_storm.webp')}}"
+                                data-resolve="{{url_for('static', filename='images/runes/additional/resolve/unflinching.webp')}}"
+                                data-inspiration="{{url_for('static', filename='images/runes/additional/inspiration/jack_of_all_trades.webp')}}">
+                        </div>
+                    </div>
+                    <div class="runes_divider"></div>
+                    <div class="secondary_runes">
+                        <div class="main_branches">
+                            <img id="branch_1" src="{{url_for('static', filename='images/runes/branches/precision.webp')}}" alt="d">
+                            <img id="branch_2" src="{{url_for('static', filename='images/runes/branches/precision.webp')}}" alt="i">
+                            <img id="branch_3" src="{{url_for('static', filename='images/runes/branches/precision.webp')}}" alt="p">
+                            <img id="branch_4" src="{{url_for('static', filename='images/runes/branches/precision.webp')}}" alt="r">
+                        </div>
+                        <div class="additional_runes">
+                            <img id="sec_rune1" src="{{url_for('static', filename='images/runes/additional/precision/coup_de_grace.webp')}}" alt="r"
+                                data-precision="{{url_for('static', filename='images/runes/additional/precision/absorb_life.webp')}}"
+                                data-domination="{{url_for('static', filename='images/runes/additional/domination/cheap_shot.webp')}}"
+                                data-sorcery="{{url_for('static', filename='images/runes/additional/sorcery/axiom_arcanist.webp')}}"
+                                data-resolve="{{url_for('static', filename='images/runes/additional/resolve/demolish.webp')}}"
+                                data-inspiration="{{url_for('static', filename='images/runes/additional/inspiration/hextech_flashtraption.webp')}}">
+                            <img id="sec_rune2" src="{{url_for('static', filename='images/runes/additional/precision/coup_de_grace.webp')}}" alt="r"
+                                data-precision="{{url_for('static', filename='images/runes/additional/precision/triumph.webp')}}"
+                                data-domination="{{url_for('static', filename='images/runes/additional/domination/taste_of_blood.webp')}}"
+                                data-sorcery="{{url_for('static', filename='images/runes/additional/sorcery/manaflow_band.webp')}}"
+                                data-resolve="{{url_for('static', filename='images/runes/additional/resolve/font_of_life.webp')}}"
+                                data-inspiration="{{url_for('static', filename='images/runes/additional/inspiration/magical_footwear.webp')}}">
+                                
+                            <img id="sec_rune3" src="{{url_for('static', filename='images/runes/additional/precision/coup_de_grace.webp')}}" alt="r"
+                                data-precision="{{url_for('static', filename='images/runes/additional/precision/presence_of_mind.webp')}}"
+                                data-domination="{{url_for('static', filename='images/runes/additional/domination/sudden_impact.webp')}}"
+                                data-sorcery="{{url_for('static', filename='images/runes/additional/sorcery/nimbus_cloak.webp')}}"
+                                data-resolve="{{url_for('static', filename='images/runes/additional/resolve/shield_bash.webp')}}"
+                                data-inspiration="{{url_for('static', filename='images/runes/additional/inspiration/cash_back.webp')}}">
+                                
+                        </div>
+                        <div class="additional_runes">
+                            <img id="sec_rune4" src="{{url_for('static', filename='images/runes/additional/precision/coup_de_grace.webp')}}" alt="r"
+                                data-precision="{{url_for('static', filename='images/runes/additional/precision/legend-alacrity.webp')}}"
+                                data-domination="{{url_for('static', filename='images/runes/additional/domination/sixth_sense.webp')}}"
+                                data-sorcery="{{url_for('static', filename='images/runes/additional/sorcery/transcendence.webp')}}"
+                                data-resolve="{{url_for('static', filename='images/runes/additional/resolve/conditioning.webp')}}"
+                                data-inspiration="{{url_for('static', filename='images/runes/additional/inspiration/triple_tonic.webp')}}">
+                            <img id="sec_rune5" src="{{url_for('static', filename='images/runes/additional/precision/coup_de_grace.webp')}}" alt="r"
+                                data-precision="{{url_for('static', filename='images/runes/additional/precision/legend-haste.webp')}}"
+                                data-domination="{{url_for('static', filename='images/runes/additional/domination/grisly_mementos.webp')}}"
+                                data-sorcery="{{url_for('static', filename='images/runes/additional/sorcery/celerity.webp')}}"
+                                data-resolve="{{url_for('static', filename='images/runes/additional/resolve/second_wind.webp')}}"
+                                data-inspiration="{{url_for('static', filename='images/runes/additional/inspiration/time_warp_tonic.webp')}}">
+                            <img id="sec_rune6" src="{{url_for('static', filename='images/runes/additional/precision/coup_de_grace.webp')}}" alt="r"
+                                data-precision="{{url_for('static', filename='images/runes/additional/precision/legend-bloodline.webp')}}"
+                                data-domination="{{url_for('static', filename='images/runes/additional/domination/deep_ward.webp')}}"
+                                data-sorcery="{{url_for('static', filename='images/runes/additional/sorcery/absolute_focus.webp')}}"
+                                data-resolve="{{url_for('static', filename='images/runes/additional/resolve/bone_plating.webp')}}"
+                                data-inspiration="{{url_for('static', filename='images/runes/additional/inspiration/biscuit_delivery.webp')}}">
+                        </div>
+                        <div class="additional_runes">
+                            <img id="sec_rune7" src="{{url_for('static', filename='images/runes/additional/precision/coup_de_grace.webp')}}" alt="r"
+                                data-precision="{{url_for('static', filename='images/runes/additional/precision/coup_de_grace.webp')}}"
+                                data-domination="{{url_for('static', filename='images/runes/additional/domination/treasure_hunter.webp')}}"
+                                data-sorcery="{{url_for('static', filename='images/runes/additional/sorcery/scorch.webp')}}"
+                                data-resolve="{{url_for('static', filename='images/runes/additional/resolve/overgrowth.webp')}}"
+                                data-inspiration="{{url_for('static', filename='images/runes/additional/inspiration/cosmic_insight.webp')}}">
+                            <img id="sec_rune8" src="{{url_for('static', filename='images/runes/additional/precision/coup_de_grace.webp')}}" alt="r"
+                                data-precision="{{url_for('static', filename='images/runes/additional/precision/cut_down.webp')}}"
+                                data-domination="{{url_for('static', filename='images/runes/additional/domination/relentless_hunter.webp')}}"
+                                data-sorcery="{{url_for('static', filename='images/runes/additional/sorcery/waterwalking.webp')}}"
+                                data-resolve="{{url_for('static', filename='images/runes/additional/resolve/revitalize.webp')}}"
+                                data-inspiration="{{url_for('static', filename='images/runes/additional/inspiration/approach_velocity.webp')}}">
+                            <img id="sec_rune9" src="{{url_for('static', filename='images/runes/additional/precision/coup_de_grace.webp')}}" alt="r"
+                                data-precision="{{url_for('static', filename='images/runes/additional/precision/last_stand.webp')}}"
+                                data-domination="{{url_for('static', filename='images/runes/additional/domination/ultimate_hunter.webp')}}"
+                                data-sorcery="{{url_for('static', filename='images/runes/additional/sorcery/gathering_storm.webp')}}"
+                                data-resolve="{{url_for('static', filename='images/runes/additional/resolve/unflinching.webp')}}"
+                                data-inspiration="{{url_for('static', filename='images/runes/additional/inspiration/jack_of_all_trades.webp')}}">
+                        </div>
+                        <div class="stat_runes_box">
+                            <div class="stat_runes">
+                                <img id="shard1" src="{{url_for('static', filename='images/runes/shards/adaptive_force.webp')}}" alt="r" class="zoom">
+                                <img id="shard2" src="{{url_for('static', filename='images/runes/shards/attack_speed.webp')}}" alt="r" class="zoom">
+                                <img id="shard3" src="{{url_for('static', filename='images/runes/shards/ability_haste.webp')}}" alt="r" class="zoom">
+                            </div>
+                            <div class="stat_runes">
+                                <img id="shard4" src="{{url_for('static', filename='images/runes/shards/adaptive_force.webp')}}" alt="r" class="zoom">
+                                <img id="shard5" src="{{url_for('static', filename='images/runes/shards/move_speed.webp')}}" alt="r" class="zoom">
+                                <img id="shard6" src="{{url_for('static', filename='images/runes/shards/health_scaling.webp')}}" alt="r" class="zoom">
+                            </div>
+                            <div class="stat_runes">
+                                <img id="shard7" src="{{url_for('static', filename='images/runes/shards/health.webp')}}" alt="r" class="zoom">
+                                <img id="shard8" src="{{url_for('static', filename='images/runes/shards/tenacity.webp')}}" alt="r" class="zoom">
+                                <img id="shard9" src="{{url_for('static', filename='images/runes/shards/health_scaling.webp')}}" alt="r" class="zoom">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="second_group_divider"></div>
+            <div class="rab_banner">
+                <div class="role_banner">
+                    <hr style="border: none; height: 0; margin: 10px 0; margin-bottom: -13px">
+                    <h1 style="margin-left: 26px">Role</h1>
+                    <div class="role_upper_divider_box">
+                        <hr class="role_upper_divider">
+                    </div>
+                    <div class="role_box">
+                        <div class="role_image">
+                            <img id="role" src="{{url_for('static', filename='images/roles/mid.png')}}" alt="role">
+                        </div>
+                    </div>
+                </div>
+                <div class="abilities_banner">
+                    <hr style="border: none; height: 0; margin: 10px 0; margin-bottom: -13px">
+                    <h1 style="margin-left: 26px">Abilities order</h1>
+                    <div class="abilities_upper_divider_box">
+                        <hr class="abilities_upper_divider">
+                    </div>
+                    <div class="abilities_box">
+                        <div class="abilities_row">
+                            <div class="item_label_box">
+                                <img id="ability1" src="{{url_for('static', filename='images/abilities/ahri/ahri_e.webp')}}" alt="ability1">
+                                <div id="ability1_label" class="caption_box">E</div>
+                            </div>
+                            <div class="triangle"></div>
+                            <div class="item_label_box">
+                                <img id="ability2" src="{{url_for('static', filename='images/abilities/ahri/ahri_w.webp')}}" alt="ability2">
+                                <div id="ability2_label" class="caption_box">W</div>
+                            </div>
+                            <div class="triangle"></div>
+                            <div class="item_label_box">
+                                <img id="ability3" src="{{url_for('static', filename='images/abilities/ahri/ahri_q.webp')}}" alt="ability3">
+                                <div id="ability3_label" class="caption_box">Q</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ban_banner">
+                    <hr style="border: none; height: 0; margin: 10px 0; margin-bottom: -13px">
+                    <h1 style="margin-left: 26px">Ban</h1>
+                    <div class="ban_upper_divider_box">
+                        <hr class="ban_upper_divider">
+                    </div>
+                    <div class="ban_box">
+                        <div class="ban_image">
+                            <img id="banned_champion" src="{{url_for('static', filename='images/character_icons/amumu.png')}}" alt="ban">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="third_group">
+            <!--<div class="lower_buttons_box">
+                <div class="lower_buttons_row">
+                    <button id="estimate">Estimate</button>
+                    <button id="roll_for_smurf">Roll for Smurf</button>
+                    <button id="roll_for_chat">Roll for Chat</button>
+                </div>
+            </div>-->
+            <hr style="border: none; width: 100%; height: 2px; background-color: #696969; margin-bottom: 8px;">
+            <div class="history_banner">
+                <hr style="border: none; height: 0; margin: 20px 0; margin-bottom: -13px">
+                <h1 style="margin-left: 26px">History</h1>
+                <div class="history_divider_box">
+                    <hr class="history_upper_divider">
+                </div>
+                <div class="no_history_wrapper">
+                    <div id="no_h" class="no_history">No history yet</div>
+                </div>
+                <div class="history_row">
+                    <div id="element1" class="history_element"> <!--11111111111111111111-->
+                        <div class="name_date">
+                            <div id="name1" class="example_name">
+                                1. Amumu
+                            </div>
+                            <div class="divider777"></div>
+                            <div class="example_time">(</div>
+                            <div id="time1" class="example_time">13:23</div>
+                            <div class="divider777"></div>
+                            <div class="example_time">-</div>
+                            <div class="divider777"></div>
+                            <div id="date1" class="example_time">06.09.2025</div>
+                            <div class="example_time">)</div>
+                        </div>
+                        <div class="history_images_row">
+                            <img id="img_1_1" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d">
+                            <div class="history_divider"></div>
+                            <img id="img_1_2" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d">
+                            <div class="history_divider"></div>
+                            <img id="img_1_3" src="{{url_for('static', filename='images/summoners/flash.png')}}" alt="summoner1">
+                            <img id="img_1_4" src="{{url_for('static', filename='images/summoners/cleanse.png')}}" alt="summoner2">
+                            <div class="history_divider"></div>
+                            <img id="img_1_5" src="{{url_for('static', filename='images/items/start/common/dark seal.webp')}}" alt="start">
+                            <img id="img_1_6" src="{{url_for('static', filename='images/items/boots/berserkers.png')}}" alt="Boots">
+                            <img id="img_1_7" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_1_8" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_1_9" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_1_10" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_1_11" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_1_16" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="6th" style="display: none;">
+                            <div class="history_divider"></div>
+                            <div id="img_1_12" class="abilities_label">Q</div>
+                            <div id="img_1_13" class="abilities_label">W</div>
+                            <div id="img_1_14" class="abilities_label">E</div>
+                            <div class="history_divider"></div>
+                            <img id="img_1_15" src="{{url_for('static', filename='images/roles/mid.png')}}" alt="role">
+                        </div>
+                    </div>
+                    <div id="element2" class="history_element"> <!--11111111111111111111-->
+                        <div class="name_date">
+                            <div id="name2" class="example_name">
+                                1. Amumu
+                            </div>
+                            <div class="divider777"></div>
+                            <div class="example_time">(</div>
+                            <div id="time2" class="example_time">13:23</div>
+                            <div class="divider777"></div>
+                            <div class="example_time">-</div>
+                            <div class="divider777"></div>
+                            <div id="date2" class="example_time">06.09.2025</div>
+                            <div class="example_time">)</div>
+                        </div>
+                        <div class="history_images_row">
+                            <img id="img_2_1" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d">
+                            <div class="history_divider"></div>
+                            <img id="img_2_2" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d">
+                            <div class="history_divider"></div>
+                            <img id="img_2_3" src="{{url_for('static', filename='images/summoners/flash.png')}}" alt="summoner1">
+                            <img id="img_2_4" src="{{url_for('static', filename='images/summoners/cleanse.png')}}" alt="summoner2">
+                            <div class="history_divider"></div>
+                            <img id="img_2_5" src="{{url_for('static', filename='images/items/start/common/dark seal.webp')}}" alt="start">
+                            <img id="img_2_6" src="{{url_for('static', filename='images/items/boots/berserkers.png')}}" alt="Boots">
+                            <img id="img_2_7" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_2_8" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_2_9" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_2_10" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_2_11" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_2_16" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="6th" style="display: none;">
+                            <div class="history_divider"></div>
+                            <div id="img_2_12" class="abilities_label">Q</div>
+                            <div id="img_2_13" class="abilities_label">W</div>
+                            <div id="img_2_14" class="abilities_label">E</div>
+                            <div class="history_divider"></div>
+                            <img id="img_2_15" src="{{url_for('static', filename='images/roles/mid.png')}}" alt="role">
+                        </div>
+                    </div>
+                    <div id="element3" class="history_element"> <!--11111111111111111111-->
+                        <div class="name_date">
+                            <div id="name3" class="example_name">
+                                1. Amumu
+                            </div>
+                            <div class="divider777"></div>
+                            <div class="example_time">(</div>
+                            <div id="time3" class="example_time">13:23</div>
+                            <div class="divider777"></div>
+                            <div class="example_time">-</div>
+                            <div class="divider777"></div>
+                            <div id="date3" class="example_time">06.09.2025</div>
+                            <div class="example_time">)</div>
+                        </div>
+                        <div class="history_images_row">
+                            <img id="img_3_1" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d">
+                            <div class="history_divider"></div>
+                            <img id="img_3_2" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d">
+                            <div class="history_divider"></div>
+                            <img id="img_3_3" src="{{url_for('static', filename='images/summoners/flash.png')}}" alt="summoner1">
+                            <img id="img_3_4" src="{{url_for('static', filename='images/summoners/cleanse.png')}}" alt="summoner2">
+                            <div class="history_divider"></div>
+                            <img id="img_3_5" src="{{url_for('static', filename='images/items/start/common/dark seal.webp')}}" alt="start">
+                            <img id="img_3_6" src="{{url_for('static', filename='images/items/boots/berserkers.png')}}" alt="Boots">
+                            <img id="img_3_7" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_3_8" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_3_9" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_3_10" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_3_11" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_3_16" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="6th" style="display: none;">
+                            <div class="history_divider"></div>
+                            <div id="img_3_12" class="abilities_label">Q</div>
+                            <div id="img_3_13" class="abilities_label">W</div>
+                            <div id="img_3_14" class="abilities_label">E</div>
+                            <div class="history_divider"></div>
+                            <img id="img_3_15" src="{{url_for('static', filename='images/roles/mid.png')}}" alt="role">
+                        </div>
+                    </div>
+                    <div id="element4" class="history_element"> <!--11111111111111111111-->
+                        <div class="name_date">
+                            <div id="name4" class="example_name">
+                                1. Amumu
+                            </div>
+                            <div class="divider777"></div>
+                            <div class="example_time">(</div>
+                            <div id="time4" class="example_time">13:23</div>
+                            <div class="divider777"></div>
+                            <div class="example_time">-</div>
+                            <div class="divider777"></div>
+                            <div id="date4" class="example_time">06.09.2025</div>
+                            <div class="example_time">)</div>
+                        </div>
+                        <div class="history_images_row">
+                            <img id="img_4_1" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d">
+                            <div class="history_divider"></div>
+                            <img id="img_4_2" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d">
+                            <div class="history_divider"></div>
+                            <img id="img_4_3" src="{{url_for('static', filename='images/summoners/flash.png')}}" alt="summoner1">
+                            <img id="img_4_4" src="{{url_for('static', filename='images/summoners/cleanse.png')}}" alt="summoner2">
+                            <div class="history_divider"></div>
+                            <img id="img_4_5" src="{{url_for('static', filename='images/items/start/common/dark seal.webp')}}" alt="start">
+                            <img id="img_4_6" src="{{url_for('static', filename='images/items/boots/berserkers.png')}}" alt="Boots">
+                            <img id="img_4_7" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_4_8" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_4_9" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_4_10" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_4_11" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_4_16" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="6th" style="display: none;">
+                            <div class="history_divider"></div>
+                            <div id="img_4_12" class="abilities_label">Q</div>
+                            <div id="img_4_13" class="abilities_label">W</div>
+                            <div id="img_4_14" class="abilities_label">E</div>
+                            <div class="history_divider"></div>
+                            <img id="img_4_15" src="{{url_for('static', filename='images/roles/mid.png')}}" alt="role">
+                        </div>
+                    </div>
+                    <div id="element5" class="history_element"> <!--11111111111111111111-->
+                        <div class="name_date">
+                            <div id="name5" class="example_name">
+                                1. Amumu
+                            </div>
+                            <div class="divider777"></div>
+                            <div class="example_time">(</div>
+                            <div id="time5" class="example_time">13:23</div>
+                            <div class="divider777"></div>
+                            <div class="example_time">-</div>
+                            <div class="divider777"></div>
+                            <div id="date5" class="example_time">06.09.2025</div>
+                            <div class="example_time">)</div>
+                        </div>
+                        <div class="history_images_row">
+                            <img id="img_5_1" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d">
+                            <div class="history_divider"></div>
+                            <img id="img_5_2" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d">
+                            <div class="history_divider"></div>
+                            <img id="img_5_3" src="{{url_for('static', filename='images/summoners/flash.png')}}" alt="summoner1">
+                            <img id="img_5_4" src="{{url_for('static', filename='images/summoners/cleanse.png')}}" alt="summoner2">
+                            <div class="history_divider"></div>
+                            <img id="img_5_5" src="{{url_for('static', filename='images/items/start/common/dark seal.webp')}}" alt="start">
+                            <img id="img_5_6" src="{{url_for('static', filename='images/items/boots/berserkers.png')}}" alt="Boots">
+                            <img id="img_5_7" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_5_8" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_5_9" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_5_10" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_5_11" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_5_16" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="6th" style="display: none;">
+                            <div class="history_divider"></div>
+                            <div id="img_5_12" class="abilities_label">Q</div>
+                            <div id="img_5_13" class="abilities_label">W</div>
+                            <div id="img_5_14" class="abilities_label">E</div>
+                            <div class="history_divider"></div>
+                            <img id="img_5_15" src="{{url_for('static', filename='images/roles/mid.png')}}" alt="role">
+                        </div>
+                    </div>
+                    <div id="element6" class="history_element"> <!--11111111111111111111-->
+                        <div class="name_date">
+                            <div id="name6" class="example_name">
+                                1. Amumu
+                            </div>
+                            <div class="divider777"></div>
+                            <div class="example_time">(</div>
+                            <div id="time6" class="example_time">13:23</div>
+                            <div class="divider777"></div>
+                            <div class="example_time">-</div>
+                            <div class="divider777"></div>
+                            <div id="date6" class="example_time">06.09.2025</div>
+                            <div class="example_time">)</div>
+                        </div>
+                        <div class="history_images_row">
+                            <img id="img_6_1" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d">
+                            <div class="history_divider"></div>
+                            <img id="img_6_2" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d">
+                            <div class="history_divider"></div>
+                            <img id="img_6_3" src="{{url_for('static', filename='images/summoners/flash.png')}}" alt="summoner1">
+                            <img id="img_6_4" src="{{url_for('static', filename='images/summoners/cleanse.png')}}" alt="summoner2">
+                            <div class="history_divider"></div>
+                            <img id="img_6_5" src="{{url_for('static', filename='images/items/start/common/dark seal.webp')}}" alt="start">
+                            <img id="img_6_6" src="{{url_for('static', filename='images/items/boots/berserkers.png')}}" alt="Boots">
+                            <img id="img_6_7" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_6_8" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_6_9" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_6_10" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_6_11" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_6_16" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="6th" style="display: none;">
+                            <div class="history_divider"></div>
+                            <div id="img_6_12" class="abilities_label">Q</div>
+                            <div id="img_6_13" class="abilities_label">W</div>
+                            <div id="img_6_14" class="abilities_label">E</div>
+                            <div class="history_divider"></div>
+                            <img id="img_6_15" src="{{url_for('static', filename='images/roles/mid.png')}}" alt="role">
+                        </div>
+                    </div>
+                    <div id="element7" class="history_element"> <!--11111111111111111111-->
+                        <div class="name_date">
+                            <div id="name7" class="example_name">
+                                1. Amumu
+                            </div>
+                            <div class="divider777"></div>
+                            <div class="example_time">(</div>
+                            <div id="time7" class="example_time">13:23</div>
+                            <div class="divider777"></div>
+                            <div class="example_time">-</div>
+                            <div class="divider777"></div>
+                            <div id="date7" class="example_time">06.09.2025</div>
+                            <div class="example_time">)</div>
+                        </div>
+                        <div class="history_images_row">
+                            <img id="img_7_1" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d">
+                            <div class="history_divider"></div>
+                            <img id="img_7_2" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d">
+                            <div class="history_divider"></div>
+                            <img id="img_7_3" src="{{url_for('static', filename='images/summoners/flash.png')}}" alt="summoner1">
+                            <img id="img_7_4" src="{{url_for('static', filename='images/summoners/cleanse.png')}}" alt="summoner2">
+                            <div class="history_divider"></div>
+                            <img id="img_7_5" src="{{url_for('static', filename='images/items/start/common/dark seal.webp')}}" alt="start">
+                            <img id="img_7_6" src="{{url_for('static', filename='images/items/boots/berserkers.png')}}" alt="Boots">
+                            <img id="img_7_7" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_7_8" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_7_9" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_7_10" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_7_11" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_7_16" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="6th" style="display: none;">
+                            <div class="history_divider"></div>
+                            <div id="img_7_12" class="abilities_label">Q</div>
+                            <div id="img_7_13" class="abilities_label">W</div>
+                            <div id="img_7_14" class="abilities_label">E</div>
+                            <div class="history_divider"></div>
+                            <img id="img_7_15" src="{{url_for('static', filename='images/roles/mid.png')}}" alt="role">
+                        </div>
+                    </div>
+                    <div id="element8" class="history_element"> <!--11111111111111111111-->
+                        <div class="name_date">
+                            <div id="name8" class="example_name">
+                                1. Amumu
+                            </div>
+                            <div class="divider777"></div>
+                            <div class="example_time">(</div>
+                            <div id="time8" class="example_time">13:23</div>
+                            <div class="divider777"></div>
+                            <div class="example_time">-</div>
+                            <div class="divider777"></div>
+                            <div id="date8" class="example_time">06.09.2025</div>
+                            <div class="example_time">)</div>
+                        </div>
+                        <div class="history_images_row">
+                            <img id="img_8_1" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d">
+                            <div class="history_divider"></div>
+                            <img id="img_8_2" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d">
+                            <div class="history_divider"></div>
+                            <img id="img_8_3" src="{{url_for('static', filename='images/summoners/flash.png')}}" alt="summoner1">
+                            <img id="img_8_4" src="{{url_for('static', filename='images/summoners/cleanse.png')}}" alt="summoner2">
+                            <div class="history_divider"></div>
+                            <img id="img_8_5" src="{{url_for('static', filename='images/items/start/common/dark seal.webp')}}" alt="start">
+                            <img id="img_8_6" src="{{url_for('static', filename='images/items/boots/berserkers.png')}}" alt="Boots">
+                            <img id="img_8_7" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_8_8" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_8_9" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_8_10" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_8_11" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_8_16" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="6th" style="display: none;">
+                            <div class="history_divider"></div>
+                            <div id="img_8_12" class="abilities_label">Q</div>
+                            <div id="img_8_13" class="abilities_label">W</div>
+                            <div id="img_8_14" class="abilities_label">E</div>
+                            <div class="history_divider"></div>
+                            <img id="img_8_15" src="{{url_for('static', filename='images/roles/mid.png')}}" alt="role">
+                        </div>
+                    </div>
+                    <div id="element9" class="history_element"> <!--11111111111111111111-->
+                        <div class="name_date">
+                            <div id="name9" class="example_name">
+                                1. Amumu
+                            </div>
+                            <div class="divider777"></div>
+                            <div class="example_time">(</div>
+                            <div id="time9" class="example_time">13:23</div>
+                            <div class="divider777"></div>
+                            <div class="example_time">-</div>
+                            <div class="divider777"></div>
+                            <div id="date9" class="example_time">06.09.2025</div>
+                            <div class="example_time">)</div>
+                        </div>
+                        <div class="history_images_row">
+                            <img id="img_9_1" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d">
+                            <div class="history_divider"></div>
+                            <img id="img_9_2" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d">
+                            <div class="history_divider"></div>
+                            <img id="img_9_3" src="{{url_for('static', filename='images/summoners/flash.png')}}" alt="summoner1">
+                            <img id="img_9_4" src="{{url_for('static', filename='images/summoners/cleanse.png')}}" alt="summoner2">
+                            <div class="history_divider"></div>
+                            <img id="img_9_5" src="{{url_for('static', filename='images/items/start/common/dark seal.webp')}}" alt="start">
+                            <img id="img_9_6" src="{{url_for('static', filename='images/items/boots/berserkers.png')}}" alt="Boots">
+                            <img id="img_9_7" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_9_8" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_9_9" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_9_10" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_9_11" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_9_16" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="6th" style="display: none;">
+                            <div class="history_divider"></div>
+                            <div id="img_9_12" class="abilities_label">Q</div>
+                            <div id="img_9_13" class="abilities_label">W</div>
+                            <div id="img_9_14" class="abilities_label">E</div>
+                            <div class="history_divider"></div>
+                            <img id="img_9_15" src="{{url_for('static', filename='images/roles/mid.png')}}" alt="role">
+                        </div>
+                    </div>
+                    <div id="element10" class="history_element"> <!--11111111111111111111-->
+                        <div class="name_date">
+                            <div id="name10" class="example_name">
+                                1. Amumu
+                            </div>
+                            <div class="divider777"></div>
+                            <div class="example_time">(</div>
+                            <div id="time10" class="example_time">13:23</div>
+                            <div class="divider777"></div>
+                            <div class="example_time">-</div>
+                            <div class="divider777"></div>
+                            <div id="date10" class="example_time">06.09.2025</div>
+                            <div class="example_time">)</div>
+                        </div>
+                        <div class="history_images_row">
+                            <img id="img_10_1" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d">
+                            <div class="history_divider"></div>
+                            <img id="img_10_2" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d">
+                            <div class="history_divider"></div>
+                            <img id="img_10_3" src="{{url_for('static', filename='images/summoners/flash.png')}}" alt="summoner1">
+                            <img id="img_10_4" src="{{url_for('static', filename='images/summoners/cleanse.png')}}" alt="summoner2">
+                            <div class="history_divider"></div>
+                            <img id="img_10_5" src="{{url_for('static', filename='images/items/start/common/dark seal.webp')}}" alt="start">
+                            <img id="img_10_6" src="{{url_for('static', filename='images/items/boots/berserkers.png')}}" alt="Boots">
+                            <img id="img_10_7" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_10_8" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_10_9" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_10_10" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_10_11" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_10_16" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="6th" style="display: none;">
+                            <div class="history_divider"></div>
+                            <div id="img_10_12" class="abilities_label">Q</div>
+                            <div id="img_10_13" class="abilities_label">W</div>
+                            <div id="img_10_14" class="abilities_label">E</div>
+                            <div class="history_divider"></div>
+                            <img id="img_10_15" src="{{url_for('static', filename='images/roles/mid.png')}}" alt="role">
+                        </div>
+                    </div>
+                    <div id="element11" class="history_element"> <!--11111111111111111111-->
+                        <div class="name_date">
+                            <div id="name11" class="example_name">
+                                1. Amumu
+                            </div>
+                            <div class="divider777"></div>
+                            <div class="example_time">(</div>
+                            <div id="time11" class="example_time">13:23</div>
+                            <div class="divider777"></div>
+                            <div class="example_time">-</div>
+                            <div class="divider777"></div>
+                            <div id="date11" class="example_time">06.09.2025</div>
+                            <div class="example_time">)</div>
+                        </div>
+                        <div class="history_images_row">
+                            <img id="img_11_1" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d">
+                            <div class="history_divider"></div>
+                            <img id="img_11_2" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d">
+                            <div class="history_divider"></div>
+                            <img id="img_11_3" src="{{url_for('static', filename='images/summoners/flash.png')}}" alt="summoner1">
+                            <img id="img_11_4" src="{{url_for('static', filename='images/summoners/cleanse.png')}}" alt="summoner2">
+                            <div class="history_divider"></div>
+                            <img id="img_11_5" src="{{url_for('static', filename='images/items/start/common/dark seal.webp')}}" alt="start">
+                            <img id="img_11_6" src="{{url_for('static', filename='images/items/boots/berserkers.png')}}" alt="Boots">
+                            <img id="img_11_7" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_11_8" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_11_9" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_11_10" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_11_11" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_11_16" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="6th" style="display: none;">
+                            <div class="history_divider"></div>
+                            <div id="img_11_12" class="abilities_label">Q</div>
+                            <div id="img_11_13" class="abilities_label">W</div>
+                            <div id="img_11_14" class="abilities_label">E</div>
+                            <div class="history_divider"></div>
+                            <img id="img_11_15" src="{{url_for('static', filename='images/roles/mid.png')}}" alt="role">
+                        </div>
+                    </div>
+                    <div id="element12" class="history_element"> <!--11111111111111111111-->
+                        <div class="name_date">
+                            <div id="name12" class="example_name">
+                                1. Amumu
+                            </div>
+                            <div class="divider777"></div>
+                            <div class="example_time">(</div>
+                            <div id="time12" class="example_time">13:23</div>
+                            <div class="divider777"></div>
+                            <div class="example_time">-</div>
+                            <div class="divider777"></div>
+                            <div id="date12" class="example_time">06.09.2025</div>
+                            <div class="example_time">)</div>
+                        </div>
+                        <div class="history_images_row">
+                            <img id="img_12_1" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d">
+                            <div class="history_divider"></div>
+                            <img id="img_12_2" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d">
+                            <div class="history_divider"></div>
+                            <img id="img_12_3" src="{{url_for('static', filename='images/summoners/flash.png')}}" alt="summoner1">
+                            <img id="img_12_4" src="{{url_for('static', filename='images/summoners/cleanse.png')}}" alt="summoner2">
+                            <div class="history_divider"></div>
+                            <img id="img_12_5" src="{{url_for('static', filename='images/items/start/common/dark seal.webp')}}" alt="start">
+                            <img id="img_12_6" src="{{url_for('static', filename='images/items/boots/berserkers.png')}}" alt="Boots">
+                            <img id="img_12_7" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_12_8" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_12_9" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_12_10" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_12_11" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_12_16" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="6th" style="display: none;">
+                            <div class="history_divider"></div>
+                            <div id="img_12_12" class="abilities_label">Q</div>
+                            <div id="img_12_13" class="abilities_label">W</div>
+                            <div id="img_12_14" class="abilities_label">E</div>
+                            <div class="history_divider"></div>
+                            <img id="img_12_15" src="{{url_for('static', filename='images/roles/mid.png')}}" alt="role">
+                        </div>
+                    </div>
+                    <div id="element13" class="history_element"> <!--11111111111111111111-->
+                        <div class="name_date">
+                            <div id="name13" class="example_name">
+                                1. Amumu
+                            </div>
+                            <div class="divider777"></div>
+                            <div class="example_time">(</div>
+                            <div id="time13" class="example_time">13:23</div>
+                            <div class="divider777"></div>
+                            <div class="example_time">-</div>
+                            <div class="divider777"></div>
+                            <div id="date13" class="example_time">06.09.2025</div>
+                            <div class="example_time">)</div>
+                        </div>
+                        <div class="history_images_row">
+                            <img id="img_13_1" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d">
+                            <div class="history_divider"></div>
+                            <img id="img_13_2" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d">
+                            <div class="history_divider"></div>
+                            <img id="img_13_3" src="{{url_for('static', filename='images/summoners/flash.png')}}" alt="summoner1">
+                            <img id="img_13_4" src="{{url_for('static', filename='images/summoners/cleanse.png')}}" alt="summoner2">
+                            <div class="history_divider"></div>
+                            <img id="img_13_5" src="{{url_for('static', filename='images/items/start/common/dark seal.webp')}}" alt="start">
+                            <img id="img_13_6" src="{{url_for('static', filename='images/items/boots/berserkers.png')}}" alt="Boots">
+                            <img id="img_13_7" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_13_8" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_13_9" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_13_10" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_13_11" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_13_16" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="6th" style="display: none;">
+                            <div class="history_divider"></div>
+                            <div id="img_13_12" class="abilities_label">Q</div>
+                            <div id="img_13_13" class="abilities_label">W</div>
+                            <div id="img_13_14" class="abilities_label">E</div>
+                            <div class="history_divider"></div>
+                            <img id="img_13_15" src="{{url_for('static', filename='images/roles/mid.png')}}" alt="role">
+                        </div>
+                    </div>
+                    <div id="element14" class="history_element"> <!--11111111111111111111-->
+                        <div class="name_date">
+                            <div id="name14" class="example_name">
+                                1. Amumu
+                            </div>
+                            <div class="divider777"></div>
+                            <div class="example_time">(</div>
+                            <div id="time14" class="example_time">13:23</div>
+                            <div class="divider777"></div>
+                            <div class="example_time">-</div>
+                            <div class="divider777"></div>
+                            <div id="date14" class="example_time">06.09.2025</div>
+                            <div class="example_time">)</div>
+                        </div>
+                        <div class="history_images_row">
+                            <img id="img_14_1" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d">
+                            <div class="history_divider"></div>
+                            <img id="img_14_2" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d">
+                            <div class="history_divider"></div>
+                            <img id="img_14_3" src="{{url_for('static', filename='images/summoners/flash.png')}}" alt="summoner1">
+                            <img id="img_14_4" src="{{url_for('static', filename='images/summoners/cleanse.png')}}" alt="summoner2">
+                            <div class="history_divider"></div>
+                            <img id="img_14_5" src="{{url_for('static', filename='images/items/start/common/dark seal.webp')}}" alt="start">
+                            <img id="img_14_6" src="{{url_for('static', filename='images/items/boots/berserkers.png')}}" alt="Boots">
+                            <img id="img_14_7" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_14_8" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_14_9" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_14_10" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_14_11" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_14_16" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="6th" style="display: none;">
+                            <div class="history_divider"></div>
+                            <div id="img_14_12" class="abilities_label">Q</div>
+                            <div id="img_14_13" class="abilities_label">W</div>
+                            <div id="img_14_14" class="abilities_label">E</div>
+                            <div class="history_divider"></div>
+                            <img id="img_14_15" src="{{url_for('static', filename='images/roles/mid.png')}}" alt="role">
+                        </div>
+                    </div>
+                    <div id="element15" class="history_element"> <!--11111111111111111111-->
+                        <div class="name_date">
+                            <div id="name15" class="example_name">
+                                1. Amumu
+                            </div>
+                            <div class="divider777"></div>
+                            <div class="example_time">(</div>
+                            <div id="time15" class="example_time">13:23</div>
+                            <div class="divider777"></div>
+                            <div class="example_time">-</div>
+                            <div class="divider777"></div>
+                            <div id="date15" class="example_time">06.09.2025</div>
+                            <div class="example_time">)</div>
+                        </div>
+                        <div class="history_images_row">
+                            <img id="img_15_1" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d">
+                            <div class="history_divider"></div>
+                            <img id="img_15_2" src="{{url_for('static', filename='images/runes/core/precision/conqueror.webp')}}" alt="d">
+                            <div class="history_divider"></div>
+                            <img id="img_15_3" src="{{url_for('static', filename='images/summoners/flash.png')}}" alt="summoner1">
+                            <img id="img_15_4" src="{{url_for('static', filename='images/summoners/cleanse.png')}}" alt="summoner2">
+                            <div class="history_divider"></div>
+                            <img id="img_15_5" src="{{url_for('static', filename='images/items/start/common/dark seal.webp')}}" alt="start">
+                            <img id="img_15_6" src="{{url_for('static', filename='images/items/boots/berserkers.png')}}" alt="Boots">
+                            <img id="img_15_7" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_15_8" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_15_9" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_15_10" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_15_11" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="1st">
+                            <img id="img_15_16" src="{{url_for('static', filename='images/items/legendary/infinity edge.png')}}" alt="6th" style="display: none;">
+                            <div class="history_divider"></div>
+                            <div id="img_15_12" class="abilities_label">Q</div>
+                            <div id="img_15_13" class="abilities_label">W</div>
+                            <div id="img_15_14" class="abilities_label">E</div>
+                            <div class="history_divider"></div>
+                            <img id="img_15_15" src="{{url_for('static', filename='images/roles/mid.png')}}" alt="role">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--
+            <hr style="border: none; width: 100%; height: 2px; background-color: #696969; margin-bottom: 18px;">
+            <div class="final_text">
+                This website was made by a Russian student for his favorite streamer Smurf_tv and his beloved game mode Ultimate Bravery. Hope you enjoy!
+            </div>
+            -->
+            <hr style="border: none; height: 0; margin: 32px 0; margin-bottom: 0px;">
+        </div>
+    </div>
+</body>
+
+<footer class="footer">
+  <hr class="footer-line">
+  <p class="footer-copy">© Randomizer for Smurf_tv. All rights reserved.</p>
+</footer>
+
+</html>

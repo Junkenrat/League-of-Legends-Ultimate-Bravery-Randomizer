@@ -1,0 +1,271 @@
+/* ===========================================================================
+   main_page3.css — нижняя секция (History), футер, верхний бар (twitch + toggles).
+   =========================================================================== */
+
+/* Контейнер нижней секции страницы (вся история, кнопки, футер) */
+.third_group {
+    width: 1120px;
+    display: flex;
+    align-items: center;
+    gap: 20px; 
+    transform: translateY(50px);
+    flex-direction: column;
+}
+
+/* Ряд нижних больших кнопок (Estimate / Roll for Smurf / Roll for Chat) — сейчас скрыт */
+.lower_buttons_row {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 24px; 
+    justify-content: space-between;
+}
+
+.lower_buttons_row button {
+    height: 60px;
+    width: 350px;
+    object-fit: cover;
+    border-radius: 20px;
+    border: 1px solid #848484;
+    background-color: #1b1b1b;
+    color: rgb(225, 225, 225);
+    font-family: "Zain", sans-serif;
+    font-weight: 400;
+    font-style: normal;;
+    font-size: 31px;
+    cursor: pointer;
+}
+
+.lower_buttons_row button:hover {
+    background-color: #282828;
+}
+
+.lower_buttons_box {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.history_upper_divider_box {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.history_upper_divider {
+    border: none;
+    height: 2px;
+    width: calc(100% - 42px); /* такая же ширина как у других */
+    background-color: #939393;
+    transform: translateY(-27px); /* чтобы сдвинуть чуть выше */
+}
+
+/* --- Баннер History: список из 15 history_element'ов --- */
+.history_banner {
+    width: 1120px;
+    height: auto;
+    background-color: #1b1b1b;
+    border-radius: 20px;
+    min-height: 200px;
+}
+
+/* Одна строка истории: имя+время слева, иконки справа. По default скрыта (display:none) */
+.history_element {
+    display: flex;
+    justify-content: space-between; /* ← распределяет элементы по краям */
+    align-items: center; /* выравнивание по вертикали, если нужно */
+    padding: 0 40px; /* необязательно — просто пример */
+    height: 60px;     /* для демонстрации */
+    color: white;
+    display: none;
+}
+
+/* Кликабельное имя чемпиона в истории (по клику — восстановить state) */
+.example_name {
+    font-family: "Zain", sans-serif;
+    font-weight: 400;
+    font-style: normal;;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.example_name:hover {
+    text-decoration: underline;
+}
+
+/* Прокручиваемый список истории (макс высота → внутренний скролл) */
+.history_row {
+    transform: translateY(-15px);
+    max-height: 300px;
+    overflow-y: auto;   /* вертикальная прокрутка при необходимости */
+    overflow-x: hidden; 
+}
+
+/* Линейка из мини-иконок в одной строке истории (~15-16 элементов с разделителями) */
+.history_images_row {
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+}
+
+.history_images_row img {
+    width: 31px;
+    height: 31px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid #939393;
+}
+
+.history_divider {
+    width: 2px;
+    height: 30px;
+    background-color: #939393;
+}
+
+/* Текстовые мини-плашки Q/W/E в истории (вместо иконок абилок) */
+.abilities_label {
+    width: 31px;
+    height: 31px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid #939393;
+    color: rgb(225, 225, 225);
+    font-family: "Zain", sans-serif;
+    font-weight: 400;
+    font-style: normal;;
+    font-size: 23px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 3px;
+    padding-left: 1px;
+}
+
+/* --- Футер страницы --- */
+.footer {
+    width: 100%;
+    text-align: center;
+    margin-top: 40px;
+}
+
+.footer-line {
+    border: none;
+    height: 1px;
+    background-color: #525252;
+    margin: 0 auto 10px auto; /* верх = 0, низ = 10px */
+    width: 90%; /* можно настроить */
+    max-width: 1120px;
+}
+
+.footer-copy {
+    color: #797979;
+    margin: 0 0 20px 0;
+    font-family: "Zain", sans-serif;
+    font-weight: 400;
+    font-style: normal;;
+    font-size: 15px;
+}
+
+/* === Верхний бар: twitch-кнопка, toggle-кнопки, разделитель =============== */
+.twitch_button {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid #939393;
+    background-image: url('images/others/wb_twitch.png');;
+    background-size: cover;
+    cursor: pointer;
+}
+
+.twitch_button:hover {
+    background-image: url('images/others/colored_twitch.png');;
+}
+
+/* Контейнер верхнего бара (заголовок слева, кнопки справа) */
+.upper_container {
+    display: flex;
+    justify-content: space-between; /* ← распределяет элементы по краям */
+    align-items: center; /* выравнивание по вертикали, если нужно */ /* необязательно — просто пример */
+    height: 60px;     /* для демонстрации */
+}
+
+/* Группа справа: No repeats | Boots start | разделитель | twitch */
+.upper_buttons {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Toggle-кнопки No repeats / Boots start (класс .active меняет фон на белый) */
+.toggle_btn {
+    position: relative;
+    height: 40px;
+    padding: 0 14px;
+    border-radius: 11px;
+    border: 1px solid #939393;
+    background-color: transparent;
+    color: #cfcfcf;
+    cursor: pointer;
+    font-family: "Zain", sans-serif;
+    font-weight: 400;
+    font-size: 22px;
+    white-space: nowrap;
+    transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.toggle_btn:hover {
+    border-color: #ffffff;
+    color: #ffffff;
+}
+
+.toggle_btn.active {
+    background-color: #dcdcdc;
+    color: #000000;
+    border-color: #dcdcdc;
+}
+
+/* Облачко-подсказка под toggle-кнопкой (показывается на hover, стрелка вверх) */
+.toggle_tooltip {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ffffff;
+    color: #000;
+    padding: 2px 10px 4px;
+    border-radius: 12px;
+    white-space: nowrap;
+    font-family: "Zain", sans-serif;
+    font-weight: 400;
+    font-size: 21px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 1000;
+}
+
+.toggle_tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: transparent transparent #ffffff transparent;
+}
+
+.toggle_btn:hover .toggle_tooltip {
+    opacity: 1;
+}
+
+/* Вертикальная серая полоска между toggle-кнопками и twitch-кнопкой */
+.upper_divider {
+    width: 1px;
+    height: 32px;
+    background-color: #939393;
+}

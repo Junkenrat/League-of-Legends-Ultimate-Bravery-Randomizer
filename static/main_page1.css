@@ -1,0 +1,398 @@
+/* ===========================================================================
+   main_page1.css — главная карточка чемпиона, обёртка, кнопка REROLL,
+   фильтр ролей, блок Items, баннер Summoners.
+   =========================================================================== */
+
+/* --- Главная карточка чемпиона (большой банер с артом + имя + REROLL) --- */
+.character_banner {
+    width: 100%;
+    height: 300px;
+    min-width: 1120px;
+    background-image: url('images/character_arts/ahri.jpg');
+    background-size: cover;
+    background-position: center;
+    object-fit: cover;
+    background-position: top;
+    border-radius: 20px;
+    border: 1px solid #939393;
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end, center;
+    padding-bottom: 20px;
+    overflow: visible;
+}
+
+body {
+    overflow-x: auto;
+}
+
+/* Корневая обёртка всей страницы (центрирует контент) */
+.wrapper {
+    width: 1120px;
+    max-width: 1120px;
+    margin: 0 auto;
+    background-color: #111;
+    border-radius: 10px;
+    color: #fff;
+    align-items: center;
+    position: relative;
+    width: fit-content;
+}
+
+/* --- Кнопка REROLL (выступает снизу из карточки) --- */
+.reroll_btn {
+    background-color: #171717;
+    color: #fff;
+    border: 1px solid #939393;
+    padding: 2px 50px;
+    font-size: 16px;
+    border-radius: 15px;
+    cursor: pointer;
+    bottom: -27px;
+    position: absolute;
+    font-family: "Zain", sans-serif;
+    font-weight: 400;
+    font-style: normal;;
+    font-size: 31px;
+    padding-top: 5px;
+}
+
+.reroll_btn:hover {
+    background-color: #282828;
+}
+
+/* --- Колонка с 5 toggle-кнопками ролей слева от карточки --- */
+.role_manage {
+    position: absolute;
+    padding: 8px 8px;
+    border: 1px solid #939393;
+    background-color: #171717;
+    border-radius: 15px;
+    max-width: fit-content;
+    margin: 0 auto;
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+}
+
+.role_manage button {
+    padding: 17px 20px;
+    background-color: #171717;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    height: 35px;
+    width: 65px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.role_manage button img {
+    width: 30px;
+    margin-top: 1px;
+    height: auto;
+    object-fit: contain;
+}
+
+.role_manage button.active {
+    background-color: #454545;
+}
+
+.role_manage hr {
+    height: 35px;
+    width: 1px;
+    background-color: #939393;
+    border: none;
+    margin: 0 0;
+}
+
+.role_manage button:hover {
+    background-color: #454545;
+}
+
+/* --- Имя чемпиона (большой заголовок внутри карточки) --- */
+.character_name {
+    position: absolute;
+    font-size: 125px;
+    font-weight: bold;
+    color: pink;
+    mix-blend-mode: color-dodge;
+    bottom: -78px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;       /* не переносить текст */
+    overflow: hidden;
+}
+
+.items_banner {
+    width: 840px;
+    height: 210px;
+    background-color: #1b1b1b;
+    border-radius: 20px;
+}
+
+.items_upper_divider_box {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ===========================================================================
+   Блок Items: контейнер, ряд из слотов, иконки предметов, подписи под ними.
+   =========================================================================== */
+.items_box {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.items_upper_divider {
+    border: none;
+    height: 2px;
+    width: calc(100% - 42px);
+    background-color: #939393;
+    transform: translateY(-27px)
+}
+
+.items_row {
+    display: flex;
+    align-items: center;
+    gap: 20px; 
+    transform: translateY(-10px);
+    overflow: visible;
+    position: relative;
+}
+
+/* Картинки предметов (c123 = классе всем 72×72 иконкам legendary/start/boots) */
+.c123 {
+    width: 72px !important;
+    height: 72px !important;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid #939393;
+    flex-shrink: 0;
+    flex-grow: 0;
+}
+
+.items_divider {
+    width: 1px;
+    height: 72px;
+    background-color: #939393;
+}
+
+/* --- Первая строка под карточкой: Items + Summoners (через разделитель) --- */
+.first_group {
+    min-width: 1120px;
+    display: flex;
+    align-items: center;
+    gap: 22px; 
+    transform: translateY(-10px);
+}
+
+.first_group_divider {
+    width: 1px;
+    height: 200px;
+    background-color: #828282;
+}
+
+.summoners_box {
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+}
+
+.summoners_upper_divider_box {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.summoners_upper_divider {
+    border: none;
+    height: 2px;
+    width: calc(100% - 42px);
+    background-color: #939393;
+    transform: translateY(-27px);
+}
+
+.summoners_row img {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid #939393;
+    
+}
+
+/* --- Баннер Summoners (2 саммонер-спелла справа от Items) --- */
+.summoners_banner {
+    width: 270px;
+    height: 210px;
+    background-color: #1b1b1b;
+    border-radius: 20px;
+}
+
+.summoners_row {
+    display: flex;
+    gap: 20px; 
+    transform: translateY(-10px);
+    margin-left: 25px; 
+}
+
+/* Один слот предмета (картинка + подпись Start/Boots/1st/.../6th) */
+.item_label_box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+}
+
+.caption_box {
+    position: absolute;
+    bottom: -14px;
+    left: calc(50% + 1px);                      
+    transform: translateX(-50%);   
+    border: 1px solid #939393;
+    background-color: #222222;
+    color: white;
+    text-align: center;
+    font-size: 20px;
+    padding: 0 7px;             
+    border-radius: 10px;         
+    font-family: "Zain", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 1.1;
+    padding-top: 4px;    
+}
+
+.role_upper_divider_box {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.role_upper_divider {
+    border: none;
+    height: 2px;
+    width: calc(100% - 42px); /* такая же ширина как у других */
+    background-color: #939393;
+    transform: translateY(-27px); /* чтобы сдвинуть чуть выше */
+}
+
+.abilities_upper_divider_box {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.abilities_upper_divider {
+    border: none;
+    height: 2px;
+    width: calc(100% - 42px); /* такая же ширина как у других */
+    background-color: #939393;
+    transform: translateY(-27px); /* чтобы сдвинуть чуть выше */
+}
+
+.ban_upper_divider_box {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ban_upper_divider {
+    border: none;
+    height: 2px;
+    width: calc(100% - 42px); /* такая же ширина как у других */
+    background-color: #939393;
+    transform: translateY(-27px); /* чтобы сдвинуть чуть выше */
+}
+
+.role_image {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid #939393;
+    margin-left: 25px; 
+    transform: translateY(-17px);
+}
+
+.role_box {
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+}
+
+.ban_box {
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+}
+
+.ban_image {
+    margin-left: 25px;
+    transform: translateY(-17px);
+}
+
+.ban_image img {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid #939393;
+}
+
+.abilities_box {
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+}
+
+.abilities_row img {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid #939393;
+    
+}
+
+.abilities_row {
+    display: flex;
+    gap: 8px; 
+    transform: translateY(-17px);
+    margin-left: 25px; 
+}
+
+.triangle {
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 12px solid #939393;
+    margin-top: 30px;
+    border-radius: 2px;
+}

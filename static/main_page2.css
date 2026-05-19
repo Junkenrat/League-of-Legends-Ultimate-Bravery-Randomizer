@@ -1,0 +1,215 @@
+/* ===========================================================================
+   main_page2.css — вторая строка ниже Items: блок Runes + Role/Abilities/Ban.
+   =========================================================================== */
+
+/* Контейнер второй строки (Runes слева, RAB справа через разделитель) */
+.second_group {
+    width: 1120px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transform: translateY(-20px);
+}
+
+.second_group_divider {
+    width: 1px;
+    height: 598px;
+    background-color: #828282;
+    flex-shrink: 0;
+}
+
+/* --- Баннер Runes: 5 веток, ядра 1-го ряда, 3 минор-ряда, вторичные, шарды --- */
+.runes_banner {
+    width: 780px;
+    height: 598px;
+    background-color: #1b1b1b;
+    border-radius: 20px;
+}
+
+.runes_upper_divider_box {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.runes_upper_divider {
+    border: none;
+    height: 2px;
+    width: calc(100% - 42px);
+    background-color: #939393;
+    transform: translateY(-27px);
+    margin-bottom: 5px;
+}
+
+.runes {
+    display: flex;
+    position: relative;
+    align-items: center;
+    gap: 10px; 
+    transform: translateY(-10px);
+    left: 18px;
+}
+
+/* Колонка с главной веткой рун (5 веток + ядра + 3 минор-ряда) */
+.main_runes {
+    width: 360px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    transform: translateY(-25px);
+}
+
+/* Колонка с вторичной веткой рун + статовыми шардами */
+.secondary_runes {
+    width: 300px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    transform: translateY(-6px);
+}
+
+/* Ряд с иконками 5 веток рун (precision/domination/sorcery/resolve/inspiration) */
+.main_branches {
+    display: flex;
+    align-items: center;
+    gap: 20px; 
+    transform: translateY(-10px);
+    
+}
+
+.main_branches img {
+    width: 33px;
+    height: 33px;
+    object-fit: cover;
+    border-radius: 20px;
+    border: 1px solid #939393;
+    /*transform: translateY(-150px);*/
+    filter: grayscale(100%);
+}
+
+.runes_divider {
+    width: 1px;
+    height: 475px;
+    background-color: #939393;
+}
+
+/* Ряд keystone-рун (core_rune1..4) — главные первого ряда */
+.core_main_runes {
+    display: flex;
+    align-items: center;
+    gap: 12px; 
+    transform: translateY(-10px)
+}
+
+.core_main_runes img {
+    width: 74px;
+    height: 74px;
+    object-fit: cover;
+    border-radius: 35px;
+    border: 1px solid #939393;
+    /*transform: translateY(-150px);*/
+    filter: grayscale(100%);
+}
+
+/* Минор-ряды главной ветки (по 3 руны: core_rune5-13) */
+.additional_main_runes {
+    display: flex;
+    align-items: center;
+    gap: 17px; 
+    transform: translateY(-10px)
+}
+
+.additional_main_runes img {
+    width: 63px;
+    height: 63px;
+    object-fit: cover;
+    border-radius: 35px;
+    border: 1px solid #939393;
+    /*transform: translateY(-150px);*/
+}
+
+/* Минор-ряды вторичной ветки (sec_rune1-9) */
+.additional_runes {
+    display: flex;
+    align-items: center;
+    gap: 17px; 
+    transform: translateY(-10px)
+}
+
+.additional_runes img {
+    width: 63px;
+    height: 63px;
+    object-fit: cover;
+    border-radius: 35px;
+    border: 1px solid #939393;
+    /*transform: translateY(-150px);*/
+}
+
+/* Stat shards (3 ряда × 3 шарда: AdaptiveForce/AS/AH, AdaptiveForce/MS/HSc, HP/Ten/HSc) */
+.stat_runes {
+    display: flex;
+    transform: translateY(-10px);
+    position: relative;
+    gap: 15px;
+}
+
+.stat_runes img {
+    width: 38px;
+    height: 38px;
+    object-fit: cover;
+    border-radius: 35px;
+    border: 1px solid #939393;
+    transform: scale(1.05);
+    padding: 2px 2px;
+}
+
+.stat_runes_box {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(20px);
+    margin-top: 7px;
+    gap: 15px;
+}
+
+/* --- Правая колонка второй строки: Role + Abilities + Ban (RAB) --- */
+.rab_banner {
+    width: 370px;
+    height: 598px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.role_banner {
+    width: 100%;
+    height: 186px;
+    background-color: #1b1b1b;
+    border-radius: 20px;
+}
+
+.abilities_banner {
+    width: 100%;
+    height: 186px;
+    background-color: #1b1b1b;
+    border-radius: 20px;
+}
+
+.ban_banner {
+    width: 100%;
+    height: 186px;
+    background-color: #1b1b1b;
+    border-radius: 20px;
+}
