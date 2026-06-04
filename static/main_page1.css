@@ -1,9 +1,9 @@
 /* ===========================================================================
-   main_page1.css — главная карточка чемпиона, обёртка, кнопка REROLL,
-   фильтр ролей, блок Items, баннер Summoners.
+   main_page1.css — main champion card, wrapper, REROLL button,
+   role filter, Items block, Summoners banner.
    =========================================================================== */
 
-/* --- Главная карточка чемпиона (большой банер с артом + имя + REROLL) --- */
+/* --- Main champion card (big banner with art + name + REROLL) --- */
 .character_banner {
     width: 100%;
     height: 300px;
@@ -28,7 +28,7 @@ body {
     overflow-x: auto;
 }
 
-/* Корневая обёртка всей страницы (центрирует контент) */
+/* Root wrapper of the whole page (centers the content) */
 .wrapper {
     width: 1120px;
     max-width: 1120px;
@@ -41,7 +41,7 @@ body {
     width: fit-content;
 }
 
-/* --- Кнопка REROLL (выступает снизу из карточки) --- */
+/* --- REROLL button (sticks out from the bottom of the card) --- */
 .reroll_btn {
     background-color: #171717;
     color: #fff;
@@ -63,7 +63,7 @@ body {
     background-color: #282828;
 }
 
-/* --- Колонка с 5 toggle-кнопками ролей слева от карточки --- */
+/* --- Column with 5 role toggle buttons to the left of the card --- */
 .role_manage {
     position: absolute;
     padding: 8px 8px;
@@ -118,7 +118,7 @@ body {
     background-color: #454545;
 }
 
-/* --- Имя чемпиона (большой заголовок внутри карточки) --- */
+/* --- Champion name (large heading inside the card) --- */
 .character_name {
     position: absolute;
     font-size: 125px;
@@ -128,7 +128,7 @@ body {
     bottom: -78px;
     left: 50%;
     transform: translateX(-50%);
-    white-space: nowrap;       /* не переносить текст */
+    white-space: nowrap;       /* do not wrap the text */
     overflow: hidden;
 }
 
@@ -148,7 +148,7 @@ body {
 }
 
 /* ===========================================================================
-   Блок Items: контейнер, ряд из слотов, иконки предметов, подписи под ними.
+   Items block: container, row of slots, item icons, captions under them.
    =========================================================================== */
 .items_box {
     width: 100%;
@@ -175,7 +175,7 @@ body {
     position: relative;
 }
 
-/* Картинки предметов (c123 = классе всем 72×72 иконкам legendary/start/boots) */
+/* Item images (c123 = class on all 72×72 legendary/start/boots icons) */
 .c123 {
     width: 72px !important;
     height: 72px !important;
@@ -192,7 +192,7 @@ body {
     background-color: #939393;
 }
 
-/* --- Первая строка под карточкой: Items + Summoners (через разделитель) --- */
+/* --- First row under the card: Items + Summoners (with a divider) --- */
 .first_group {
     min-width: 1120px;
     display: flex;
@@ -239,7 +239,7 @@ body {
     
 }
 
-/* --- Баннер Summoners (2 саммонер-спелла справа от Items) --- */
+/* --- Summoners banner (2 summoner spells to the right of Items) --- */
 .summoners_banner {
     width: 270px;
     height: 210px;
@@ -254,7 +254,7 @@ body {
     margin-left: 25px; 
 }
 
-/* Один слот предмета (картинка + подпись Start/Boots/1st/.../6th) */
+/* A single item slot (image + Start/Boots/1st/.../6th caption) */
 .item_label_box {
     position: relative;
     display: flex;
@@ -292,9 +292,9 @@ body {
 .role_upper_divider {
     border: none;
     height: 2px;
-    width: calc(100% - 42px); /* такая же ширина как у других */
+    width: calc(100% - 42px); /* same width as the others */
     background-color: #939393;
-    transform: translateY(-27px); /* чтобы сдвинуть чуть выше */
+    transform: translateY(-27px); /* nudge it slightly higher */
 }
 
 .abilities_upper_divider_box {
@@ -307,9 +307,9 @@ body {
 .abilities_upper_divider {
     border: none;
     height: 2px;
-    width: calc(100% - 42px); /* такая же ширина как у других */
+    width: calc(100% - 42px); /* same width as the others */
     background-color: #939393;
-    transform: translateY(-27px); /* чтобы сдвинуть чуть выше */
+    transform: translateY(-27px); /* nudge it slightly higher */
 }
 
 .ban_upper_divider_box {
@@ -322,9 +322,9 @@ body {
 .ban_upper_divider {
     border: none;
     height: 2px;
-    width: calc(100% - 42px); /* такая же ширина как у других */
+    width: calc(100% - 42px); /* same width as the others */
     background-color: #939393;
-    transform: translateY(-27px); /* чтобы сдвинуть чуть выше */
+    transform: translateY(-27px); /* nudge it slightly higher */
 }
 
 .role_image {

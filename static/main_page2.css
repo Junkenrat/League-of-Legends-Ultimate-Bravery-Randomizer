@@ -1,8 +1,8 @@
 /* ===========================================================================
-   main_page2.css — вторая строка ниже Items: блок Runes + Role/Abilities/Ban.
+   main_page2.css — second row below Items: Runes block + Role/Abilities/Ban.
    =========================================================================== */
 
-/* Контейнер второй строки (Runes слева, RAB справа через разделитель) */
+/* Second row container (Runes on the left, RAB on the right with a divider) */
 .second_group {
     width: 1120px;
     display: flex;
@@ -18,7 +18,7 @@
     flex-shrink: 0;
 }
 
-/* --- Баннер Runes: 5 веток, ядра 1-го ряда, 3 минор-ряда, вторичные, шарды --- */
+/* --- Runes banner: 5 branches, 1st-row cores, 3 minor rows, secondary, shards --- */
 .runes_banner {
     width: 780px;
     height: 598px;
@@ -51,7 +51,7 @@
     left: 18px;
 }
 
-/* Колонка с главной веткой рун (5 веток + ядра + 3 минор-ряда) */
+/* Column with the primary rune branch (5 branches + cores + 3 minor rows) */
 .main_runes {
     width: 360px;
     height: 200px;
@@ -63,7 +63,7 @@
     transform: translateY(-25px);
 }
 
-/* Колонка с вторичной веткой рун + статовыми шардами */
+/* Column with the secondary rune branch + stat shards */
 .secondary_runes {
     width: 300px;
     height: 200px;
@@ -75,7 +75,7 @@
     transform: translateY(-6px);
 }
 
-/* Ряд с иконками 5 веток рун (precision/domination/sorcery/resolve/inspiration) */
+/* Row with the 5 rune branch icons (precision/domination/sorcery/resolve/inspiration) */
 .main_branches {
     display: flex;
     align-items: center;
@@ -100,7 +100,7 @@
     background-color: #939393;
 }
 
-/* Ряд keystone-рун (core_rune1..4) — главные первого ряда */
+/* Keystone rune row (core_rune1..4) — the main runes of the first row */
 .core_main_runes {
     display: flex;
     align-items: center;
@@ -118,7 +118,7 @@
     filter: grayscale(100%);
 }
 
-/* Минор-ряды главной ветки (по 3 руны: core_rune5-13) */
+/* Minor rows of the primary branch (3 runes each: core_rune5-13) */
 .additional_main_runes {
     display: flex;
     align-items: center;
@@ -135,7 +135,7 @@
     /*transform: translateY(-150px);*/
 }
 
-/* Минор-ряды вторичной ветки (sec_rune1-9) */
+/* Minor rows of the secondary branch (sec_rune1-9) */
 .additional_runes {
     display: flex;
     align-items: center;
@@ -152,7 +152,7 @@
     /*transform: translateY(-150px);*/
 }
 
-/* Stat shards (3 ряда × 3 шарда: AdaptiveForce/AS/AH, AdaptiveForce/MS/HSc, HP/Ten/HSc) */
+/* Stat shards (3 rows × 3 shards: AdaptiveForce/AS/AH, AdaptiveForce/MS/HSc, HP/Ten/HSc) */
 .stat_runes {
     display: flex;
     transform: translateY(-10px);
@@ -182,7 +182,7 @@
     gap: 15px;
 }
 
-/* --- Правая колонка второй строки: Role + Abilities + Ban (RAB) --- */
+/* --- Right column of the second row: Role + Abilities + Ban (RAB) --- */
 .rab_banner {
     width: 370px;
     height: 598px;

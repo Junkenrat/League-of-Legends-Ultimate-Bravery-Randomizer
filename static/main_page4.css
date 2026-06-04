@@ -1,16 +1,16 @@
 /* ===========================================================================
-   main_page4.css — звёздочки уникальных пассивок над предметами, общий
-   тултип с названием картинки, стили истории, прочие мелкие тексты.
+   main_page4.css — unique-passive stars above items, the shared
+   image-name tooltip, history styles, and other small bits of text.
    =========================================================================== */
 
-/* === Звезда уникальной пассивки + её розовый тултип (рисуется над предметом) */
+/* === Unique passive star + its pink tooltip (drawn above the item) */
 .tooltip_wrapper {
     position: relative;
     display: inline-block;
     top: -35px;
 }
 
-/* Сам тултип со стрелкой вниз — розовый по умолчанию */
+/* The tooltip itself with a downward arrow — pink by default */
 .tooltip_text_with_arrow {
     position: absolute;
     bottom: 100%; 
@@ -39,11 +39,11 @@
     padding-top: 9px;
 }
 
-/* Стрелочка */
+/* The little arrow */
 .tooltip_text_with_arrow::after {
     content: '';
     position: absolute;
-    top: 100%; /* снизу тултипа */
+    top: 100%; /* at the bottom of the tooltip */
     left: 50%;
     transform: translateX(-50%);
     border-width: 6px;
@@ -51,13 +51,13 @@
     border-color: #FF9E9E transparent transparent transparent;
 }
 
-/* Показывать при наведении */
+/* Show on hover */
 .tooltip_wrapper:hover .tooltip_text_with_arrow {
     opacity: 1;
     pointer-events: auto;
 }
 
-/* Жёлтый вариант — для "Runaan's Hurricane: Ranged only" */
+/* Yellow variant — for "Runaan's Hurricane: Ranged only" */
 .tooltip_text_with_arrow.yellow {
     background-color: yellow;
 }
@@ -66,7 +66,7 @@
 }
 
 
-/* Маленькая звезда в углу слота предмета (индикатор уникальной пассивки) */
+/* Small star in the corner of an item slot (unique passive indicator) */
 .star_icon {
     position: absolute;
     top: -10px;
@@ -80,7 +80,7 @@
     transform: scale(0.95);
 }
 
-/* Финальная подпись под историей (про русского студента и Smurf_tv) */
+/* Final caption under the history */
 .final_text {
     position: relative;
     display: flex;
@@ -94,7 +94,7 @@
     text-align: center; 
 }
 
-/* Плейсхолдер "No history yet" — показывается, пока myData пуст */
+/* "No history yet" placeholder — shown while myData is empty */
 .no_history {
     position: relative;
     display: flex;
@@ -111,7 +111,7 @@
     color: rgb(147, 147, 147)
 }
 
-/* Левая часть строки истории: "N. ChampionName (HH:MM - DD.MM.YYYY)" */
+/* Left part of a history row: "N. ChampionName (HH:MM - DD.MM.YYYY)" */
 .name_date {
     display: flex;
     justify-content: space-between;
@@ -127,9 +127,9 @@
     margin-bottom: -1px;
 }
 
-/* === Общий тултип-облачко с названием картинки (см. JS formatImageName) ====
-   Одиночный fixed-div, переиспользуется для всех item_label_box, summoner1/2,
-   role, banned_champion. Появляется сверху от объекта по hover. */
+/* === Shared image-name tooltip bubble (see JS formatImageName) ====
+   A single fixed div, reused for all item_label_box, summoner1/2,
+   role, banned_champion. Appears above the object on hover. */
 #item-hover-tooltip {
     position: fixed;
     background-color: #ffffff;
@@ -162,7 +162,7 @@
     opacity: 1;
 }
 
-/* Узкий пустой div-разделитель (8px) между текстовыми элементами в name_date */
+/* Narrow empty divider div (8px) between text elements in name_date */
 .divider777 {
     width: 8px;
 }

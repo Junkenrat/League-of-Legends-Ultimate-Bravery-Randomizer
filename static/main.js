@@ -1,24 +1,24 @@
 // ============================================================================
-// Загрузка данных из data-* атрибутов скрытого контейнера (передаётся из Flask)
+// Load data from the data-* attributes of a hidden container (passed from Flask)
 // ============================================================================
 const container = document.getElementById("data-container");
-const summoners = JSON.parse(container.dataset.summoners);              // обычные саммонер-спеллы
-const smite = JSON.parse(container.dataset.smite);                       // smite (используется только в Jungle)
-const champion_arts = JSON.parse(container.dataset.championArts);        // арты чемпионов (фон главной карточки)
-const champion_icons = JSON.parse(container.dataset.championIcons);      // иконки чемпионов (для бана)
+const summoners = JSON.parse(container.dataset.summoners);              // regular summoner spells
+const smite = JSON.parse(container.dataset.smite);                       // smite (used only in Jungle)
+const champion_arts = JSON.parse(container.dataset.championArts);        // champion arts (main card background)
+const champion_icons = JSON.parse(container.dataset.championIcons);      // champion icons (for the ban)
 const common_start_items = JSON.parse(container.dataset.commonStartItems);
 const jungle_start_items = JSON.parse(container.dataset.jungleStartItems);
 const support_start_items = JSON.parse(container.dataset.supportStartItems);
-const legendary_items = JSON.parse(container.dataset.legendaryItems);    // легендарки (5 или 6 на ролл)
+const legendary_items = JSON.parse(container.dataset.legendaryItems);    // legendary items (5 or 6 per roll)
 const boots = JSON.parse(container.dataset.boots);
 const roles = JSON.parse(container.dataset.roles);                       // Top, Jungle, Mid, Bot, Support
-const abilities = JSON.parse(container.dataset.abilities);               // абилки всех чемпионов (q/w/e)
-const runes_branches = JSON.parse(container.dataset.runesBranches);      // 5 веток рун
+const abilities = JSON.parse(container.dataset.abilities);               // abilities of all champions (q/w/e)
+const runes_branches = JSON.parse(container.dataset.runesBranches);      // 5 rune branches
 
-// История роллов (localStorage). Ограничена 15 записями.
+// Roll history (localStorage). Limited to 15 entries.
 function loadData() {
   const raw = localStorage.getItem("myListOfLists");
-  if (!raw) return []; // всегда массив
+  if (!raw) return []; // always an array
   return deserialize(raw);
 }
 
@@ -26,15 +26,15 @@ const STORAGE_KEY = "myListOfLists";
 const myData = loadData();
 
 // ============================================================================
-// Фильтр ролей: кнопки слева от главной карточки переключают, какие роли
-// допустимы при рандомайзе. Один клик — выбор только этой роли,
-// повторный — выключает фильтр (тогда роль выбирается из всех).
+// Role filter: the buttons to the left of the main card toggle which roles
+// are allowed during the roll. One click selects only that role,
+// a second click turns the filter off (then the role is chosen from all).
 // ============================================================================
 const role_buttons = document.querySelectorAll('.role-toggle');
 role_buttons.forEach(btn => {
   btn.addEventListener('click', () => {
     if (btn.classList.contains('active')) {
-      btn.classList.remove('active'); // выключаем, если повторный клик
+      btn.classList.remove('active'); // turn off on a repeated click
     } else {
       role_buttons.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
@@ -43,13 +43,16 @@ role_buttons.forEach(btn => {
 });
 
 // ============================================================================
-// Уникальные пассивки предметов — рядом с такими предметами рисуется звезда
-// с тултипом, в котором написана сама пассивка.
+// Unique item passives — a star is drawn next to such items with a tooltip
+// that shows the passive itself.
 // ============================================================================
 const uniqueItems = [
+  { name: "rod of ages", trait: "Eternity" },
+  { name: "zhonya's hourglass", trait: "Stasis" },
   { name: "winter's approach", trait: "Manaflow" },
   { name: "manamune", trait: "Manaflow" },
   { name: "archangel's staff", trait: "Manaflow" },
+  { name: "whispering circlet", trait: "Manaflow" },
   { name: "trailblazer", trait: "Momentum" },
   { name: "dead man's plate", trait: "Momentum" },
   { name: "sunfire aegis", trait: "Immolate" },
@@ -57,6 +60,7 @@ const uniqueItems = [
   { name: "lich bane", trait: "Spellblade" },
   { name: "trinity force", trait: "Spellblade" },
   { name: "iceborn gauntlet", trait: "Spellblade" },
+  { name: "dusk and dawn", trait: "Spellblade" },
   { name: "bloodletter's curse", trait: "Blight" },
   { name: "void staff", trait: "Blight" },
   { name: "cryptbloom", trait: "Blight" },
@@ -70,6 +74,7 @@ const uniqueItems = [
   { name: "immortal shieldbow", trait: "Lifeline" },
   { name: "sterack's cage", trait: "Lifeline" },
   { name: "maw of malmortius", trait: "Lifeline" },
+  { name: "protoplasm harness", trait: "Lifeline" },
   { name: "profane hydra", trait: "Hydra" },
   { name: "stridebreaker", trait: "Hydra" },
   { name: "ravenous hydra", trait: "Hydra" },
@@ -78,25 +83,27 @@ const uniqueItems = [
 
 
 // ============================================================================
-// Конфликты предметов — какие предметы не могут сосуществовать в одной сборке.
-// Используется в isConflict(): при наборе пула легендарок предмет пропускается,
-// если уже выбран кто-то из его "врагов".
+// Item conflicts — which items cannot coexist in the same build.
+// Used in isConflict(): while building the legendary pool an item is skipped
+// if one of its "enemies" has already been selected.
 // ============================================================================
 const conflicts = {
-  "winter's approach": ["manamune", "archangel's staff"],
-  "manamune": ["winter's approach", "archangel's staff"],
-  "archangel's staff": ["manamune", "manamune"],
+  "winter's approach": ["manamune", "archangel's staff", "whispering circlet"],
+  "manamune": ["winter's approach", "archangel's staff", "whispering circlet"],
+  "archangel's staff": ["manamune", "manamune", "whispering circlet"],
+  "whispering circlet": ["manamune", "manamune", "archangel's staff"],
   "trailblazer": ["dead man's plate"],
   "dead man's plate": ["trailblazer"],
   "sunfire aegis": ["hollow radiance"],
   "hollow radiance": ["sunfire aegis"],
-  "lich bane": ["trinity force", "iceborn gauntlet", "Bloodsong"],
-  "trinity force": ["lich bane", "iceborn gauntlet", "Bloodsong"],
-  "iceborn gauntlet": ["trinity force", "lich bane", "Bloodsong"],
+  "lich bane": ["trinity force", "iceborn gauntlet", "Bloodsong", "dusk and dawn"],
+  "trinity force": ["lich bane", "iceborn gauntlet", "Bloodsong", "dusk and dawn"],
+  "iceborn gauntlet": ["trinity force", "lich bane", "Bloodsong", "dusk and dawn"],
+  "dusk and dawn": ["trinity force", "lich bane", "Bloodsong", "iceborn gauntlet"],
   "bloodletter's curse": ["void staff", "cryptbloom"],
   "void staff": ["bloodletter's curse", "cryptbloom"],
   "cryptbloom": ["void staff", "bloodletter's curse"],
-  "terminus": ["bloodletter's curse", "void staff", "cryptbloom", 
+  "terminus": ["bloodletter's curse", "void staff", "cryptbloom",
     "black cleaver", "mortal reminder", "lord dominik's regards", "serylda's grudge"],
   "mortal reminder": ["black cleaver", "lord dominik's regards", "serylda's grudge"],
   "lord dominik's regards": ["mortal reminder", "black cleaver", "serylda's grudge"],
@@ -104,9 +111,10 @@ const conflicts = {
   "serylda's grudge": ["mortal reminder", "lord dominik's regards", "black cleaver"],
   "banshee's veil": ["edge of night"],
   "edge of night": ["banshee's veil"],
-  "immortal shieldbow": ["sterack's cage", "maw of malmortius"],
-  "sterack's cage": ["immortal shieldbow", "maw of malmortius"],
-  "maw of malmortius": ["immortal shieldbow", "sterack's cage"],
+  "immortal shieldbow": ["sterack's cage", "maw of malmortius", "protoplasm harness"],
+  "sterack's cage": ["immortal shieldbow", "maw of malmortius", "protoplasm harness"],
+  "maw of malmortius": ["immortal shieldbow", "sterack's cage", "protoplasm harness"],
+  "protoplasm harness": ["immortal shieldbow", "sterack's cage", "maw of malmortius"],
   "profane hydra": ["stridebreaker", "ravenous hydra", "titanic hydra"],
   "stridebreaker": ["profane hydra", "titanic hydra", "ravenous hydra"],
   "ravenous hydra": ["profane hydra", "stridebreaker", "titanic hydra"],
@@ -115,9 +123,9 @@ const conflicts = {
 }
 
 // ============================================================================
-// Таблица соответствия "имя руны → id картинки + ветка". Нужна для:
-//   - истории: чтобы восстановить путь к картинке по имени руны
-//   - подсветки правильной руны при выборе ветки
+// Lookup table "rune name -> image id + branch". Needed for:
+//   - history: to rebuild the image path from a rune name
+//   - highlighting the correct rune when a branch is selected
 // ============================================================================
 const runes_names = [
   { name: "electrocute", img_name: "core_rune1", branch: "domination"},
@@ -140,16 +148,16 @@ const runes_names = [
 ];
 
 // ============================================================================
-// Утилиты и функции рандомного выбора
+// Utilities and random-selection functions
 // ============================================================================
 
-// Список id ролей, у которых сейчас активна кнопка-фильтр
+// List of role ids whose filter button is currently active
 function getCurrentRoles() {
   const activeButtons = [...role_buttons].filter(btn => btn.classList.contains('active'));
   return activeButtons.map(btn => btn.id);
 }
 
-// Возвращает 2 саммонер-спелла. Для Jungle первый всегда smite, второй — случайный.
+// Returns 2 summoner spells. For Jungle the first is always smite, the second is random.
 function getSummoners(arr, smite_arr, cur_role, count) {
   if (cur_role === "Jungle") {
     const randomSummoner = arr[Math.floor(Math.random() * arr.length)];
@@ -160,13 +168,13 @@ function getSummoners(arr, smite_arr, cur_role, count) {
   }
 }
 
-// Один случайный элемент массива
+// A single random element of an array
 function get1Random(arr) {
   const randomIndex = Math.floor(Math.random() * arr.length);
   return arr[randomIndex];
 }
 
-// Конфликтует ли кандидат с уже выбранными предметами (по таблице conflicts)
+// Whether the candidate conflicts with already-selected items (per the conflicts table)
 function isConflict(selected, candidate) {
   return selected.some(item => {
     const name1 = item.name;
@@ -175,7 +183,7 @@ function isConflict(selected, candidate) {
   });
 }
 
-// Выбор стартового предмета — пул зависит от роли
+// Pick the starting item — the pool depends on the role
 function getStartItem(c_arr, j_arr, s_arr, cur_role) {
   if (cur_role === "Jungle") {
     const randomIndex = Math.floor(Math.random() * j_arr.length);
@@ -189,32 +197,32 @@ function getStartItem(c_arr, j_arr, s_arr, cur_role) {
   }
 }
 
-// "No repeats": выбираем чемпиона из тех, что не встречались в последних 10 роллах
+// "No repeats": pick a champion among those not seen in the last 10 rolls
 function pickChampionNoRepeats(champion_arts, recent_names) {
   const recent = new Set(recent_names.map(n => (n || "").toLowerCase()));
   const available = champion_arts.filter(c => !recent.has(c.name.toLowerCase()));
-  const pool = available.length ? available : champion_arts; // fallback если все запретили
+  const pool = available.length ? available : champion_arts; // fallback if everything is excluded
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
-// Набор уникальных легендарок с учётом конфликтов и спец-флагов:
-//   flag = true (Bloodsong) — пропускаем "трини/айсборн/lich"
-//   champ_type = false (мили) — пропускаем "runaan's hurricane"
+// Build a set of unique legendaries accounting for conflicts and special flags:
+//   flag = true (Bloodsong) — skip "trinity/iceborn/lich"
+//   champ_type = false (melee) — skip "runaan's hurricane"
 function getItems(arr, count = 5, flag, champ_type) {
   const banned = ["trinity force", "lich bane", "iceborn gauntlet"];
-  const forbiddenForFalse = ["runaan's hurricane"]; 
+  const forbiddenForFalse = ["runaan's hurricane"];
   const shuffled = [...arr].sort(() => 0.5 - Math.random());
   const result = [];
 
   for (const item of shuffled) {
     const itemName = (item.name?.toLowerCase?.() || item.toLowerCase());
 
-    // если предмет запрещён и включён флаг → пропускаем
+    // if the item is banned and the flag is on -> skip
     if (flag && banned.includes(itemName)) {
       continue;
     }
 
-    // если champ_type = false и предмет запрещён → пропускаем
+    // if champ_type = false and the item is forbidden -> skip
     if (!champ_type && forbiddenForFalse.includes(itemName)) {
       continue;
     }
@@ -231,39 +239,39 @@ function getItems(arr, count = 5, flag, champ_type) {
 
 
 function getRandomAbilities(arr, current_champion) {
-  // Фильтруем способности, соответствующие текущему чемпиону
+  // Filter abilities that belong to the current champion
   const filtered = arr.filter(
     ability => ability.name.startsWith(current_champion.name.toLowerCase())
   );
 
-  // Перемешиваем массив способностей
+  // Shuffle the abilities array
   const shuffled = filtered.sort(() => 0.5 - Math.random());
 
-  // Возвращаем первые 3
+  // Return the first 3
   return shuffled.slice(0, 3);
 }
 
-// Выбор случайной роли с учётом активных role-кнопок-фильтров
+// Pick a random role taking the active role filter buttons into account
 function getRandomActiveRoleObject(roles) {
   const roleButtons = document.querySelectorAll('.role-toggle');
 
-  // Получаем имена активных ролей: ['Top', 'Jungle', ...]
+  // Get the names of active roles: ['Top', 'Jungle', ...]
   const activeRoleNames = [...roleButtons]
     .filter(btn => btn.classList.contains('active'))
     .map(btn => btn.id.replace('toggle_', ''))
     .map(role => role.charAt(0).toUpperCase() + role.slice(1));
 
-  // Если роли выбраны — фильтруем их
+  // If roles are selected — filter by them
   const filteredRoles = activeRoleNames.length > 0
     ? roles.filter(roleObj => activeRoleNames.includes(roleObj.name))
-    : roles; // иначе берём все роли
+    : roles; // otherwise take all roles
 
-  // Выбираем случайный объект
+  // Pick a random object
   const randomIndex = Math.floor(Math.random() * filteredRoles.length);
   return filteredRoles[randomIndex];
 }
 
-// Случайный забаненный чемпион — не может совпасть с текущим выбранным
+// Random banned champion — cannot match the currently selected one
 function getBannedChampion(champions, cur_champ) {
   champ = get1Random(champions);
   while (champ === cur_champ) {
@@ -273,8 +281,8 @@ function getBannedChampion(champions, cur_champ) {
 }
 
 // ============================================================================
-// Сброс подсветки всего блока рун — все ветки/ядра/вторичные/шарды в "серый".
-// Вызывается перед каждым роллом, чтобы старая подсветка не оставалась.
+// Reset the highlight of the whole rune block — all branches/cores/secondary/shards to "gray".
+// Called before every roll so the old highlight does not linger.
 // ============================================================================
 function noColorsForRunes() {
   for (let branch of runes_branches) {
@@ -293,20 +301,20 @@ function noColorsForRunes() {
     document.getElementById(element).style.borderColor = '#939393';
     document.getElementById(element).style.opacity = '0.35';
   }
-  for (let element of ["core_rune1", "core_rune2", "core_rune3", "core_rune4", 
+  for (let element of ["core_rune1", "core_rune2", "core_rune3", "core_rune4",
     "core_rune5", "core_rune6", "core_rune7", "core_rune8", "core_rune9",
     "core_rune10", "core_rune11", "core_rune12", "core_rune13"]) {
     document.getElementById(element).style.filter = 'grayscale(100%)';
     document.getElementById(element).style.borderColor = '#939393';
     document.getElementById(element).style.opacity = '0.35';
   }
-  for (let element of ["sec_rune1", "sec_rune2", "sec_rune3", "sec_rune4", 
+  for (let element of ["sec_rune1", "sec_rune2", "sec_rune3", "sec_rune4",
     "sec_rune5", "sec_rune6", "sec_rune7", "sec_rune8", "sec_rune9"]) {
     document.getElementById(element).style.filter = 'grayscale(100%)';
     document.getElementById(element).style.borderColor = '#939393';
     document.getElementById(element).style.opacity = '0.35';
   }
-  for (let element of ["shard1", "shard2", "shard3", "shard4", 
+  for (let element of ["shard1", "shard2", "shard3", "shard4",
     "shard5", "shard6", "shard7", "shard8", "shard9"]) {
     document.getElementById(element).style.filter = 'grayscale(100%)';
     document.getElementById(element).style.borderColor = '#939393';
@@ -314,30 +322,30 @@ function noColorsForRunes() {
   }
 }
 
-// Заполняет 4 слота-ветки в блоке вторичных рун: показывает все ветки кроме
-// главной, и подсвечивает специально выбранную вторичную белой обводкой.
+// Fills the 4 branch slots in the secondary runes block: shows all branches except
+// the main one, and highlights the specifically chosen secondary branch with a white border.
 function assignImagesToBranches(imageList, excludedName, specialBranch) {
-  // Отфильтровать список: исключить один элемент по имени
+  // Filter the list: exclude one element by name
   const filteredList = imageList.filter(item => item.name !== excludedName);
-  // Пройтись по 4 <img> с id="branch_1", "branch_2", ...
+  // Iterate over the 4 <img> with id="branch_1", "branch_2", ...
   for (let i = 0; i < 4; i++) {
     const imgId = `branch_${i + 1}`;
     const imgElement = document.getElementById(imgId);
     const imageData = filteredList[i];
     imgElement.src = imageData.image;
 
-    // Проверяем — соответствует ли это special ветке
+    // Check whether this matches the special branch
     if (imageData.image === specialBranch.image) {
-      imgElement.style.border = '1px solid white'; 
-      imgElement.style.filter = 'grayscale(0%)'; 
-      imgElement.style.opacity = '1'; 
+      imgElement.style.border = '1px solid white';
+      imgElement.style.filter = 'grayscale(0%)';
+      imgElement.style.opacity = '1';
     } else {
-      imgElement.style.border = '1px solid #939393;'; // очистим, если не соответствует
+      imgElement.style.border = '1px solid #939393;'; // clear if it does not match
     }
   }
 }
 
-// Вторичная ветка — любая, кроме главной
+// Secondary branch — any branch other than the main one
 function getAddictionalBranch(branches, main_branch) {
   rune = get1Random(branches);
   while (rune === main_branch) {
@@ -346,9 +354,9 @@ function getAddictionalBranch(branches, main_branch) {
   return rune;
 }
 
-// Подменяет картинки рун в основном блоке и блоке вторичных рун в зависимости
-// от выбранной ветки (берёт URL из data-* атрибутов <img>). Также показывает/
-// скрывает 4-ю keystone-руну: она существует только для precision и sorcery.
+// Swaps the rune images in the main block and the secondary runes block depending
+// on the chosen branch (takes the URL from the <img> data-* attributes). Also shows/
+// hides the 4th keystone rune: it only exists for precision and sorcery.
 function assignMainPage(main_branch, sec_branch) {
   document
     .querySelectorAll('.core_main_runes img')
@@ -380,8 +388,8 @@ function assignMainPage(main_branch, sec_branch) {
 }
 
 
-// Выбор 4 основных рун: по одной из каждого ряда (keystone + 3 минор-ряда).
-// Для precision/sorcery в первом ряду 4 варианта, для остальных — 3.
+// Pick the 4 main runes: one from each row (keystone + 3 minor rows).
+// For precision/sorcery the first row has 4 options, for the rest — 3.
 function getMainRunes(main_branch) {
   let st1 = [];
   if (main_branch === "precision" || main_branch === "sorcery") {
@@ -395,15 +403,15 @@ function getMainRunes(main_branch) {
   return [get1Random(st1), get1Random(nd2), get1Random(rd3), get1Random(th4)];
 }
 
-// Две вторичные руны из двух разных рядов (3 ряда по 3 руны)
+// Two secondary runes from two different rows (3 rows of 3 runes)
 function getSecRunes() {
   const st1 = ["sec_rune1", "sec_rune2", "sec_rune3"];
   const nd2 = ["sec_rune4", "sec_rune5", "sec_rune6"];
   const rd3 = ["sec_rune7", "sec_rune8", "sec_rune9"];
-  
+
   const pools = [st1, nd2, rd3];
 
-  // Выбираем два разных массива
+  // Pick two different arrays
   const firstIndex = Math.floor(Math.random() * pools.length);
   let secondIndex;
   do {
@@ -417,19 +425,19 @@ function getSecRunes() {
 }
 
 
-// Показывает звёздочки-индикаторы над предметами:
-//   - "Runaan's Hurricane" → жёлтая звезда с подписью "Ranged only"
-//   - Уникальные пассивки из uniqueItems → розовая звезда с названием пассивки
-// Для Support прячет 5-ю звезду, для не-Bot прячет 6-ю.
+// Shows star indicators above items:
+//   - "Runaan's Hurricane" -> yellow star labeled "Ranged only"
+//   - Unique passives from uniqueItems -> pink star with the passive name
+// For Support hides the 5th star, for non-Bot hides the 6th.
 function showStarsForUniqueItems(objects, uniqueItems, role) {
   objects.forEach((cur_object, index) => {
     const starElement = document.getElementById(`star${index + 1}`);
     const textElement = document.getElementById(`text${index + 1}`);
     const imgElement = document.getElementById(`ss${index + 1}`);
 
-    if (!starElement || !textElement) return; // защита от null
+    if (!starElement || !textElement) return; // guard against null
 
-    // Особый случай "Runaan's Hurricane"
+    // Special case "Runaan's Hurricane"
     if (cur_object.name.toLowerCase() === "runaan's hurricane") {
       starElement.style.display = 'inline-block';
       starElement.style.color = "yellow";
@@ -438,16 +446,17 @@ function showStarsForUniqueItems(objects, uniqueItems, role) {
       textElement.classList.add("yellow");
       imgElement.style.backgroundColor = "yellow";
       imgElement.style.borderColor = "yellow";
-      return; // дальше не идем
+      return; // stop here
     }
 
-    // Проверка на уникальные предметы
+    // Check for unique items
     const foundUnique = uniqueItems.find(u => u.name === cur_object.name);
     if (foundUnique) {
       starElement.style.display = 'inline-block';
       textElement.textContent = `Unique: ${foundUnique.trait}`;
     } else {
-      // если не уникальный и не runaan's
+      // if not unique and not runaan's — hide the star
+      starElement.style.display = 'none';
       starElement.style.backgroundColor = "#FF9E9E";
       textElement.style.borderColor = "#FF9E9E transparent transparent transparent";
       textElement.style.backgroundColor = "#FF9E9E";
@@ -457,14 +466,14 @@ function showStarsForUniqueItems(objects, uniqueItems, role) {
     }
   });
 
-  // Если роль Support — скрываем 5-ю звезду
+  // If the role is Support — hide the 5th star
   if (role.name === "Support") {
     const starElement = document.getElementById('star5');
     if (starElement) {
       starElement.style.display = 'none';
     }
   }
-  // Если роль не Bot — скрываем 6-ю звезду
+  // If the role is not Bot — hide the 6th star
   if (role.name !== "Bot") {
     const starElement = document.getElementById('star6');
     if (starElement) {
@@ -474,9 +483,9 @@ function showStarsForUniqueItems(objects, uniqueItems, role) {
 }
 
 
-// Управляет видимостью 5-го и 6-го слотов в items_row:
-//   Support → скрываем 5-й слот (у саппа только 4 легендарки)
-//   Bot     → показываем дополнительный 6-й слот
+// Controls the visibility of the 5th and 6th slots in items_row:
+//   Support -> hide the 5th slot (support gets only 4 legendaries)
+//   Bot     -> show the extra 6th slot
 function assignRoles (cur_role) {
   if (cur_role === "Support") {
     document.getElementById('5th').style.display = 'none';
@@ -484,7 +493,6 @@ function assignRoles (cur_role) {
     document.getElementById('label5').style.display = 'none';
   } else {
     document.getElementById('5th').style.display = 'inline-block';
-    document.getElementById('star5').style.display = 'inline-block';
     document.getElementById('label5').style.display = 'block';
   }
   if (cur_role === "Bot") {
@@ -505,31 +513,31 @@ function getRuneName(branch, img_name) {
 }
 
 function formatDate(date) {
-  let day = date.getDate().toString().padStart(2, "0");   // день с ведущим нулем
-  let month = (date.getMonth() + 1).toString().padStart(2, "0"); // месяц с ведущим нулем
+  let day = date.getDate().toString().padStart(2, "0");   // day with a leading zero
+  let month = (date.getMonth() + 1).toString().padStart(2, "0"); // month with a leading zero
   let year = date.getFullYear();
   return `${day}.${month}`;
 }
 
 // ============================================================================
-// Рендер одной строки истории (number_h = 1..15). Каждый img_N_K — это иконка
-// в строке (рунка, саммонер, предмет и т.д.). Путь до картинки собирается из
-// имён и папок, сохранённых в myData. Поддерживает 6-й предмет для Bot.
+// Render a single history row (number_h = 1..15). Each img_N_K is an icon
+// in the row (rune, summoner, item, etc.). The image path is assembled from
+// the names and folders stored in myData. Supports a 6th item for Bot.
 // ============================================================================
 function updateHistoryElement(number_h, champion_name_h, branch_name_h, rune_img_name_h, summoner1_name_h, summoner2_name_h,
   start_item_h, start_folder_h, boots_h, item1_h, item2_h, item3_h, item4_h, item5_h, role_h, ability1_h, ability2_h, ability3_h, date_var_h, item6_h
 ) {
-  // Соглашение по регистру файлов:
-  //   все папки → lowercase, КРОМЕ static/images/items/boots/ (Title Case).
-  // Поэтому ниже большинство имён принудительно приводится к нижнему регистру,
-  // а имя бота — оставляем как есть (оно уже Title Case в данных).
+  // File case convention:
+  //   all folders -> lowercase, EXCEPT static/images/items/boots/ (Title Case).
+  // That is why below most names are forced to lowercase,
+  // while the boots name is kept as is (it is already Title Case in the data).
   const lc = s => (s == null ? "" : s.toString().toLowerCase());
 
   document.getElementById('element' + number_h.toString()).style.display = "flex";
   document.getElementById(`name${number_h.toString()}`).textContent = number_h.toString() + ". " + capitalizeFirstLetter(champion_name_h);
-  // character_icons/ хранит файлы в lowercase (aatrox.png, draven.png).
-  // champion_name_h может быть "Draven" (capitalizeFirstLetter применён при сохранении),
-  // поэтому принудительно приводим к нижнему регистру.
+  // character_icons/ stores files in lowercase (aatrox.png, draven.png).
+  // champion_name_h may be "Draven" (capitalizeFirstLetter applied on save),
+  // so we force it to lowercase.
   document.getElementById('img_' + number_h.toString() + "_1").src = "/static/images/character_icons/" + lc(champion_name_h) + ".png";
   document.getElementById('img_' + number_h.toString() + "_2").src = "/static/images/runes/core/" + lc(branch_name_h) + "/"
   + getRuneName(branch_name_h, rune_img_name_h, runes_names) + ".webp";
@@ -568,7 +576,7 @@ function updateHistoryElement(number_h, champion_name_h, branch_name_h, rune_img
   document.getElementById("date" + number_h.toString()).textContent = formatDate(date_var_h);
 }
 
-// По названию роли возвращает имя папки со стартовыми предметами
+// Given a role name returns the folder name for the starting items
 function start_item_from_role (role) {
   if (role === "Support") {
     return "support"
@@ -580,11 +588,11 @@ function start_item_from_role (role) {
 }
 
 // ============================================================================
-// Сериализация в localStorage с поддержкой Date (иначе JSON.stringify теряет тип)
+// Serialization to localStorage with Date support (otherwise JSON.stringify loses the type)
 // ============================================================================
 function serialize(data) {
   return JSON.stringify(data, function (key, value) {
-    // original — исходное значение свойства до toJSON
+    // original — the property's original value before toJSON
     const original = this && key ? this[key] : value;
     if (original instanceof Date) {
       return { __type: "Date", value: original.toISOString() };
@@ -613,13 +621,13 @@ function saveData(data) {
   localStorage.setItem(STORAGE_KEY, serialize(data));
 }
 
-// Удалить список по индексу
+// Remove a list by index
 function removeList(index) {
   myData.splice(index, 1);
   saveData(myData);
 }
 
-// Добавить новый список (история кольцевая: при 15 элементах сдвигает старые)
+// Add a new list (history is circular: at 15 entries it shifts out the oldest)
 function addList(newList) {
   if (myData.length < 15) {
     myData.push(newList);
@@ -631,27 +639,27 @@ function addList(newList) {
 }
 
 // ============================================================================
-// Основной обработчик кнопки REROLL: генерирует полный набор случайных полей
-// (роль, чемпион, саммонеры, руны, предметы, абилки, бан) и обновляет весь UI.
+// Main REROLL button handler: generates a full set of random fields
+// (role, champion, summoners, runes, items, abilities, ban) and updates the whole UI.
 // ============================================================================
 document.getElementById('reroll_btn').addEventListener('click', () => {
   const noRepeatsActive = document.getElementById('no_repeats_btn')?.classList.contains('active');
   const bootsStartActive = document.getElementById('boots_start_btn')?.classList.contains('active');
 
-  // --- 1. Случайный выбор всех полей --------------------------------------
+  // --- 1. Random selection of all fields ----------------------------------
   const role = getRandomActiveRoleObject(roles);
   const [summoner1, summoner2] = getSummoners(summoners, smite, role.name, 2);
-  // "No repeats": исключаем последних 10 чемпионов
+  // "No repeats": exclude the last 10 champions
   const recent = noRepeatsActive ? myData.slice(-10).map(v => v[0]) : [];
   const champion = noRepeatsActive ? pickChampionNoRepeats(champion_arts, recent) : get1Random(champion_arts);
-  // "Boots start": если выключено, удаляем boots.webp из пула common
+  // "Boots start": if disabled, remove boots.webp from the common pool
   const common_pool = bootsStartActive ? common_start_items : common_start_items.filter(i => i.name.toLowerCase() !== "boots");
   const start_item = getStartItem(common_pool, jungle_start_items, support_start_items, role.name);
   let is_Bloodsong = false;
   if (start_item.name === "Bloodsong") {is_Bloodsong = true};
   let is_Ranged = false;
   if (champion.type === "r") {is_Ranged = true};
-  // Bot получает 6 легендарок вместо 5
+  // Bot gets 6 legendaries instead of 5
   const items = getItems(legendary_items, role.name === "Bot" ? 6 : 5, is_Bloodsong, is_Ranged);
   const boot = get1Random(boots);
   const abilities_order = getRandomAbilities(abilities, champion);
@@ -662,7 +670,7 @@ document.getElementById('reroll_btn').addEventListener('click', () => {
   const second_group_runes = getSecRunes();
   const shard_runes = [get1Random(["shard1", "shard2", "shard3"]), get1Random(["shard4", "shard5", "shard6"]), get1Random(["shard7", "shard8", "shard9"])];
 
-  // --- 2. Подготовка блоков рун ------------------------------------------
+  // --- 2. Prepare the rune blocks ----------------------------------------
   noColorsForRunes();
   assignImagesToBranches(runes_branches, main_runes_branch.name, second_runes_branch);
   assignMainPage(main_runes_branch.name, second_runes_branch.name);
@@ -671,16 +679,16 @@ document.getElementById('reroll_btn').addEventListener('click', () => {
     document.getElementById(element).style.display = 'none';
   }
 
-  // Перерисовать историю (показывает все сохранённые ранее роллы)
+  // Redraw history (shows all previously saved rolls)
   myData.forEach((value, index) => {
     updateHistoryElement(myData.length - index, ...value);
   });
 
-  // --- 3. Сохраняем текущий ролл в history -------------------------------
-  // Структура массива (индексы):
+  // --- 3. Save the current roll into history -----------------------------
+  // Array structure (indexes):
   //   0  champion_name, 1 main_branch, 2 main_rune1 (keystone), 3-4 summoners,
   //   5 start_item, 6 start_folder, 7 boot, 8-12 items 1-5, 13 role,
-  //   14-16 ability letters, 17 date, 18 item6 (или null),
+  //   14-16 ability letters, 17 date, 18 item6 (or null),
   //   19-21 main_rune2..4, 22 sec_branch, 23-24 sec_rune1-2,
   //   25-27 shards, 28 banned champion
   const generation1 = [
@@ -717,20 +725,20 @@ document.getElementById('reroll_btn').addEventListener('click', () => {
 
   addList(generation1);
 
-  // --- 4. Применяем выбранное к live-UI -----------------------------------
-  // Главная карточка чемпиона (фон + имя)
+  // --- 4. Apply the selection to the live UI ------------------------------
+  // Main champion card (background + name)
   const card = document.getElementById('champion_card');
   card.style.backgroundImage = `url("${champion.image}")`;
   document.getElementById("champion_name").textContent = champion.name.toUpperCase();
 
-  // Саммонер-спеллы
+  // Summoner spells
   document.getElementById('summoner1').src = summoner1.image;
   document.getElementById('summoner1').alt = summoner1.name;
 
   document.getElementById('summoner2').src = summoner2.image;
   document.getElementById('summoner2').alt = summoner2.name;
 
-  // Стартовый предмет / боты / роль
+  // Start item / boots / role
   document.getElementById('start_item').src = start_item.image;
   document.getElementById('start_item').alt = start_item.name;
 
@@ -740,7 +748,7 @@ document.getElementById('reroll_btn').addEventListener('click', () => {
   document.getElementById('role').src = role.image;
   document.getElementById('role').alt = role.name;
 
-  // Легендарки 1-5 (+ 6-я для Bot)
+  // Legendaries 1-5 (+ 6th for Bot)
   document.getElementById('1st').src = items[0].image;
   document.getElementById('1st').alt = items[0].name;
   document.getElementById('2nd').src = items[1].image;
@@ -756,7 +764,7 @@ document.getElementById('reroll_btn').addEventListener('click', () => {
     document.getElementById('6th').alt = items[5].name;
   }
 
-  // Абилки (3 шт.)
+  // Abilities (3 of them)
   document.getElementById('ability1').src = abilities_order[0].image;
   document.getElementById('ability1').alt = abilities_order[0].name;
   document.getElementById('ability2').src = abilities_order[1].image;
@@ -766,7 +774,7 @@ document.getElementById('reroll_btn').addEventListener('click', () => {
 
   document.getElementById("no_h").style.display = 'none';
 
-  // Спец-обработка Aphelios: лейблы абилок показывают AD/AS/ArP вместо Q/W/E
+  // Aphelios special case: ability labels show AD/AS/ArP instead of Q/W/E
   if (champion.name === "aphelios") {
     document.getElementById('ability1').style.padding = "11px";
     document.getElementById('ability1').style.boxSizing = "border-box";
@@ -811,37 +819,37 @@ document.getElementById('reroll_btn').addEventListener('click', () => {
     document.getElementById('ability3_label').textContent = abilities_order[2].name[abilities_order[2].name.length - 1].toUpperCase();
   }
 
-  // Бан
+  // Ban
   document.getElementById('banned_champion').src = banned_champion.image;
   document.getElementById('banned_champion').alt = banned_champion.name;
 
-  // Подсветка главной ветки рун
+  // Highlight the main rune branch
   document.getElementById(main_runes_branch.name).style.filter = 'grayscale(0%)';
   document.getElementById(main_runes_branch.name).style.borderColor = 'white';
   document.getElementById(main_runes_branch.name).style.opacity = '1';
 
-  // Подсветка 4 главных рун
+  // Highlight the 4 main runes
   for (let element of first_group_runes) {
     document.getElementById(element).style.filter = 'grayscale(0%)';
     document.getElementById(element).style.border = 'solid 1px white';
     document.getElementById(element).style.opacity = '1';
   }
 
-  // Подсветка 2 вторичных рун
+  // Highlight the 2 secondary runes
   for (let element of second_group_runes) {
     document.getElementById(element).style.filter = 'grayscale(0%)';
     document.getElementById(element).style.border = 'solid 1px white';
     document.getElementById(element).style.opacity = '1';
   }
 
-  // Подсветка 3 stat-шардов
+  // Highlight the 3 stat shards
   for (let element of shard_runes) {
     document.getElementById(element).style.filter = 'grayscale(0%)';
     document.getElementById(element).style.border = 'solid 1px white';
     document.getElementById(element).style.opacity = '1';
   }
 
-  // Звёзды над уникальными предметами + специальная для Bloodsong start
+  // Stars above unique items + a special one for Bloodsong start
   showStarsForUniqueItems(items, uniqueItems, role);
   if (start_item.name === "Bloodsong") {
     document.getElementById("star0").style.display = 'inline-block';
@@ -849,16 +857,16 @@ document.getElementById('reroll_btn').addEventListener('click', () => {
     document.getElementById("star0").style.display = 'none';
   }
 
-  // Финальная перерисовка истории (включает добавленную сейчас запись)
+  // Final redraw of history (includes the entry just added)
   myData.forEach((value, index) => {
     updateHistoryElement(myData.length - index, ...value);
   });
 });
 
 // ============================================================================
-// Стартовая инициализация при загрузке страницы — делает один "автоматический"
-// ролл, чтобы UI не показывал заглушки. Логика дублирует reroll-обработчик,
-// но без учёта no_repeats/boots_start (тоглы по умолчанию выключены).
+// Initial setup on page load — performs one "automatic" roll so the UI does not
+// show placeholders. The logic duplicates the reroll handler,
+// but without no_repeats/boots_start (the toggles are off by default).
 // ============================================================================
 window.addEventListener('DOMContentLoaded', function () {
   const role = getRandomActiveRoleObject(roles);
@@ -1049,8 +1057,8 @@ window.addEventListener('DOMContentLoaded', function () {
 });
 
 // ============================================================================
-// Toggle-кнопки "No repeats" / "Boots start" в верхнем баре.
-// Просто переключают класс .active — фактическая логика читается в reroll.
+// Toggle buttons "No repeats" / "Boots start" in the top bar.
+// They just flip the .active class — the actual logic is read in reroll.
 // ============================================================================
 ['no_repeats_btn', 'boots_start_btn'].forEach(id => {
   const btn = document.getElementById(id);
@@ -1058,17 +1066,17 @@ window.addEventListener('DOMContentLoaded', function () {
   btn.addEventListener('click', () => btn.classList.toggle('active'));
 });
 
-// ============================================================================ 
-// Облачко с названием картинки при наведении (общее для items, banned, и т.д.)
-// Один общий div создаётся динамически и переиспользуется. Координаты делятся
-// на zoom тела (т.к. body имеет CSS zoom).
+// ============================================================================
+// Hover bubble with the image name (shared for items, banned, etc.)
+// One shared div is created dynamically and reused. Coordinates are divided
+// by the body zoom (because body has CSS zoom).
 // ============================================================================
 const itemTooltip = document.createElement('div');
 itemTooltip.id = 'item-hover-tooltip';
 document.body.appendChild(itemTooltip);
 
-// Превращает URL → красивое имя ("blade_of_the_ruined_king.png" → "Blade of the Ruined King").
-// Артикли the/and/of остаются строчными (кроме случая, когда они первое слово).
+// Turns a URL -> a pretty name ("blade_of_the_ruined_king.png" -> "Blade of the Ruined King").
+// Articles the/and/of stay lowercase (except when they are the first word).
 function formatImageName(src) {
   const filename = decodeURIComponent(src.split('/').pop().replace(/\.[^.]+$/, ''));
   const lowerWords = new Set(['the', 'and', 'of']);
@@ -1080,10 +1088,10 @@ function formatImageName(src) {
     .join(' ');
 }
 
-// Тултипы для всех item_label_box (start, boots, 1st..6th)
+// Tooltips for all item_label_box (start, boots, 1st..6th)
 document.querySelectorAll('.item_label_box').forEach(box => {
   box.addEventListener('mouseenter', (e) => {
-    // Не показываем тултип при наведении на саму звезду — у неё свой текст
+    // Do not show the tooltip when hovering the star itself — it has its own text
     if (e.target.closest('.tooltip_wrapper')) return;
     const img = box.querySelector('img.c123');
     if (!img) return;
@@ -1100,7 +1108,7 @@ document.querySelectorAll('.item_label_box').forEach(box => {
     itemTooltip.classList.remove('visible');
   });
 
-  // Если курсор переходит со звезды обратно на сам слот — снова показываем имя
+  // If the cursor moves from the star back to the slot itself — show the name again
   const star = box.querySelector('.tooltip_wrapper');
   if (star) {
     star.addEventListener('mouseenter', () => itemTooltip.classList.remove('visible'));
@@ -1112,7 +1120,7 @@ document.querySelectorAll('.item_label_box').forEach(box => {
   }
 });
 
-// Тот же тултип для одиночных <img> вне item_label_box
+// The same tooltip for standalone <img> outside item_label_box
 ['banned_champion', 'summoner1', 'summoner2', 'role'].forEach(id => {
   const el = document.getElementById(id);
   if (!el) return;
@@ -1131,15 +1139,15 @@ document.querySelectorAll('.item_label_box').forEach(box => {
 });
 
 // ============================================================================
-// Восстановление состояния из истории: по клику на имя чемпиона восстанавливаем
-// весь UI по сохранённому массиву (см. структуру в комментарии к generation1).
+// Restoring state from history: clicking a champion name restores the
+// whole UI from the saved array (see the structure in the generation1 comment).
 // ============================================================================
 
 function applyStateFromHistory(v) {
-  // Минимальная длина 18 — это записи без 6-го предмета и шардов
+  // Minimum length 18 — these are entries without the 6th item and shards
   if (!Array.isArray(v) || v.length < 18) return;
 
-  // --- Парсим все поля массива ---
+  // --- Parse all array fields ---
   const champion_name = v[0];
   const main_branch_name = v[1];
   const main_rune1 = v[2];
@@ -1162,7 +1170,7 @@ function applyStateFromHistory(v) {
   const shardIds = [v[25], v[26], v[27]];
   const banned_name = v[28];
 
-  // --- Поиск объектов по именам в data-массивах ---
+  // --- Look up objects by name in the data arrays ---
   const lc = s => (s || "").toString().toLowerCase();
   const champion = champion_arts.find(c => lc(c.name) === lc(champion_name));
   if (!champion) return;
@@ -1312,9 +1320,9 @@ function applyStateFromHistory(v) {
   }
 }
 
-// Клик по имени чемпиона в истории → плавный скролл наверх + восстановление UI.
-// Каждый history_element имеет id вида "elementN", где N — порядковый номер
-// (1 — самая свежая запись). Конвертим N → индекс в myData.
+// Click on a champion name in history -> smooth scroll to top + restore the UI.
+// Each history_element has an id like "elementN", where N is the ordinal number
+// (1 — the most recent entry). Convert N -> index in myData.
 document.querySelectorAll('.history_element').forEach(el => {
   const nameEl = el.querySelector('.example_name');
   if (!nameEl) return;

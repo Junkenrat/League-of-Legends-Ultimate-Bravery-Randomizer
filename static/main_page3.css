@@ -1,8 +1,8 @@
 /* ===========================================================================
-   main_page3.css — нижняя секция (History), футер, верхний бар (twitch + toggles).
+   main_page3.css — bottom section (History), footer, top bar (twitch + toggles).
    =========================================================================== */
 
-/* Контейнер нижней секции страницы (вся история, кнопки, футер) */
+/* Bottom page section container (all history, buttons, footer) */
 .third_group {
     width: 1120px;
     display: flex;
@@ -12,7 +12,7 @@
     flex-direction: column;
 }
 
-/* Ряд нижних больших кнопок (Estimate / Roll for Smurf / Roll for Chat) — сейчас скрыт */
+/* Row of large bottom buttons (Estimate / Roll for Smurf / Roll for Chat) — currently hidden */
 .lower_buttons_row {
     width: 100%;
     display: flex;
@@ -58,12 +58,12 @@
 .history_upper_divider {
     border: none;
     height: 2px;
-    width: calc(100% - 42px); /* такая же ширина как у других */
+    width: calc(100% - 42px); /* same width as the others */
     background-color: #939393;
-    transform: translateY(-27px); /* чтобы сдвинуть чуть выше */
+    transform: translateY(-27px); /* nudge it slightly higher */
 }
 
-/* --- Баннер History: список из 15 history_element'ов --- */
+/* --- History banner: a list of 15 history_elements --- */
 .history_banner {
     width: 1120px;
     height: auto;
@@ -72,18 +72,18 @@
     min-height: 200px;
 }
 
-/* Одна строка истории: имя+время слева, иконки справа. По default скрыта (display:none) */
+/* A single history row: name+time on the left, icons on the right. Hidden by default (display:none) */
 .history_element {
     display: flex;
-    justify-content: space-between; /* ← распределяет элементы по краям */
-    align-items: center; /* выравнивание по вертикали, если нужно */
-    padding: 0 40px; /* необязательно — просто пример */
-    height: 60px;     /* для демонстрации */
+    justify-content: space-between; /* ← pushes elements to the edges */
+    align-items: center; /* vertical alignment, if needed */
+    padding: 0 40px; /* optional — just an example */
+    height: 60px;     /* for demonstration */
     color: white;
     display: none;
 }
 
-/* Кликабельное имя чемпиона в истории (по клику — восстановить state) */
+/* Clickable champion name in history (click — restore the state) */
 .example_name {
     font-family: "Zain", sans-serif;
     font-weight: 400;
@@ -96,15 +96,15 @@
     text-decoration: underline;
 }
 
-/* Прокручиваемый список истории (макс высота → внутренний скролл) */
+/* Scrollable history list (max height → inner scroll) */
 .history_row {
     transform: translateY(-15px);
     max-height: 300px;
-    overflow-y: auto;   /* вертикальная прокрутка при необходимости */
+    overflow-y: auto;   /* vertical scrolling when needed */
     overflow-x: hidden; 
 }
 
-/* Линейка из мини-иконок в одной строке истории (~15-16 элементов с разделителями) */
+/* Strip of mini icons in one history row (~15-16 elements with dividers) */
 .history_images_row {
     display: flex;
     align-items: center;
@@ -125,7 +125,7 @@
     background-color: #939393;
 }
 
-/* Текстовые мини-плашки Q/W/E в истории (вместо иконок абилок) */
+/* Q/W/E text mini-badges in history (instead of ability icons) */
 .abilities_label {
     width: 31px;
     height: 31px;
@@ -144,7 +144,7 @@
     padding-left: 1px;
 }
 
-/* --- Футер страницы --- */
+/* --- Page footer --- */
 .footer {
     width: 100%;
     text-align: center;
@@ -155,8 +155,8 @@
     border: none;
     height: 1px;
     background-color: #525252;
-    margin: 0 auto 10px auto; /* верх = 0, низ = 10px */
-    width: 90%; /* можно настроить */
+    margin: 0 auto 10px auto; /* top = 0, bottom = 10px */
+    width: 90%; /* can be adjusted */
     max-width: 1120px;
 }
 
@@ -169,7 +169,7 @@
     font-size: 15px;
 }
 
-/* === Верхний бар: twitch-кнопка, toggle-кнопки, разделитель =============== */
+/* === Top bar: twitch button, toggle buttons, divider =============== */
 .twitch_button {
     width: 40px;
     height: 40px;
@@ -185,22 +185,22 @@
     background-image: url('images/others/colored_twitch.png');;
 }
 
-/* Контейнер верхнего бара (заголовок слева, кнопки справа) */
+/* Top bar container (heading on the left, buttons on the right) */
 .upper_container {
     display: flex;
-    justify-content: space-between; /* ← распределяет элементы по краям */
-    align-items: center; /* выравнивание по вертикали, если нужно */ /* необязательно — просто пример */
-    height: 60px;     /* для демонстрации */
+    justify-content: space-between; /* ← pushes elements to the edges */
+    align-items: center; /* vertical alignment, if needed */ /* optional — just an example */
+    height: 60px;     /* for demonstration */
 }
 
-/* Группа справа: No repeats | Boots start | разделитель | twitch */
+/* Right group: No repeats | Boots start | divider | twitch */
 .upper_buttons {
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
-/* Toggle-кнопки No repeats / Boots start (класс .active меняет фон на белый) */
+/* Toggle buttons No repeats / Boots start (the .active class turns the background white) */
 .toggle_btn {
     position: relative;
     height: 40px;
@@ -228,7 +228,7 @@
     border-color: #dcdcdc;
 }
 
-/* Облачко-подсказка под toggle-кнопкой (показывается на hover, стрелка вверх) */
+/* Hint bubble under a toggle button (shown on hover, arrow pointing up) */
 .toggle_tooltip {
     position: absolute;
     top: calc(100% + 10px);
@@ -263,7 +263,7 @@
     opacity: 1;
 }
 
-/* Вертикальная серая полоска между toggle-кнопками и twitch-кнопкой */
+/* Vertical gray bar between the toggle buttons and the twitch button */
 .upper_divider {
     width: 1px;
     height: 32px;
