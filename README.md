@@ -3,13 +3,12 @@
 A web service for **Ultimate Bravery** — the well-known community challenge in League of Legends in which a player must assemble a fully random build and play only with it. With a single button press the app generates a random setup: champion, role, summoner spells, runes, items, ability leveling order, and a champion to ban.
 
 > One click on **REROLL** gives you a fully random — yet playable — setup: it accounts for the role, item conflicts, and champion specifics. The rest is up to you: win the game.
-
 ---
+You can visit the website by following the link: [smurfbravery.ru](https://smurfbravery.ru)
 
-## What is Ultimate Bravery
 
-Ultimate Bravery is a self-imposed challenge: a dedicated generator hands out a random champion, summoner spells, runes, item build, and ability leveling order, and the player must strictly follow that set for the entire game. This service automates the generation and makes it "fair": it respects the role, never hands out conflicting items, and surfaces important build nuances.
-
+# What is Ultimate Bravery
+<sub>Ultimate Bravery is a self-imposed challenge: a dedicated generator hands out a random champion, summoner spells, runes, item build, and ability order — and you **must strictly follow** that set for the entire game.</sub>
 ---
 
 ## Features
@@ -102,7 +101,6 @@ python app.py
 Once started, the app is available at **http://127.0.0.1:5000/**.
 
 > By default the app runs in debug mode (`debug=True`). For production, disable it and use a WSGI server (for example, `gunicorn` or `waitress`).
-
 ---
 
 ## How it works
